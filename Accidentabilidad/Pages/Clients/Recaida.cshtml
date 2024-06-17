@@ -1,0 +1,142 @@
+﻿@page
+@model Accidentabilidad.Pages.Clients.RecaidaModel
+@{
+}
+
+<h2>Nueva recaida</h2>
+
+<form method="POST">
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Folio</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" asp-for="accidente.Folio" disabled>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Trabajador:</label>
+        <div class="col-sm-6">
+            <select class="form-select" id="lista" asp-for="accidente.Nomina" asp-items="@Model.empleados" >
+            </select>
+            <span class="text-danger" asp-validation-for="accidente.Nomina"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Área:</label>
+        <div class="col-sm-6">
+            <select class="form-select" asp-for="accidente.Area_ID" asp-items="@Model.areas">
+            </select>
+            <span class="text-danger" asp-validation-for="accidente.Area_ID"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Atención:</label>
+        <div class="col-sm-6">
+            <select id="firstSelect" class=" form-select" asp-for="accidente.Atencion_ID" asp-items="@Model.atencion" onchange="updateSecondSelect()">
+            </select>
+            <span class="text-danger" asp-validation-for="accidente.Atencion_ID"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Diagnostico:</label>
+        <div class="col-sm-6">
+            <textarea class="form-control" asp-for="accidente.Diagnostico" rows="3"></textarea>
+            <span class="text-danger" asp-validation-for="accidente.Diagnostico"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">IPP:</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" asp-for="accidente.IPP">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Calificación:</label>
+        <div class="col-sm-6">
+            <select id="secondSelect" class="form-select" asp-for="accidente.Calificacion_ID" asp-items="@Model.calificaciones">
+            </select>
+            <span class="text-danger" asp-validation-for="accidente.Calificacion_ID"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Incapacidad inicial:</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="date" asp-for="accidente.Incapacidad_inicial" />
+            <span class="text-danger" asp-validation-for="accidente.Incapacidad_inicial"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Inicio de labores:</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="date" asp-for="accidente.Inicio_labores" />
+            <span class="text-danger" asp-validation-for="accidente.Inicio_labores"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Días subsidiados</label>
+        <div class="col-sm-6">
+            <input type="number" class="form-control" asp-for="accidente.Dias_subsidiados">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">¿Se reporta?:</label>
+        <div class="col-sm-6">
+            <select class="form-select" asp-for="accidente.Reporta">
+                <option value="">-- Selecciona opción --</option>
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+                <option value="DIAS">DÍAS</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class='btn btn-primary btn-sm'>Guardar</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class='btn btn-outline-primary btn-sm' href='/Clients' role="button">Cancelar</a>
+        </div>
+    </div>
+
+    @if (Model.errorMessage.Length > 0)
+    {
+        <div class="row mb-3">
+            <div class="offset-sm-3 col-sm-6 d-grid">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>@Model.errorMessage</strong>
+                    <button type="button" class='btn-close' data-bs-dismiss='alert' aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    }
+
+</form>
+
+
+@section Scripts {
+    <script>
+
+        var secondOptions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.calificaciones_));
+
+        function updateSecondSelect() {
+            var firstSelect = document.getElementById("firstSelect");
+            var secondSelect = document.getElementById("secondSelect");
+            var selectedValue = firstSelect.value;
+
+            // Limpiar las opciones actuales del segundo select
+            secondSelect.innerHTML = '<option value="">--Selecciona calificación--</option>';
+
+            if (selectedValue && secondOptions[selectedValue]) {
+                // Añadir nuevas opciones basadas en la selección del primer select
+                secondOptions[selectedValue].forEach(function (option) {
+                    var opt = document.createElement('option');
+                    opt.value = option.Value;
+                    opt.text = option.Text;
+                    secondSelect.appendChild(opt);
+                });
+            }
+        }
+
+    </script>
+    }

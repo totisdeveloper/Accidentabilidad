@@ -1,0 +1,68 @@
+﻿@page "/"
+@model Accidentabilidad.Pages.Account.LoginModel
+@{
+    Layout = "_LayoutLogin";
+}
+
+<section class="container" style="padding-top:10rem">
+    <!-- Jumbotron -->
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(116, 37%, 59%);">
+        <div class="container">
+            <div class="row gx-lg-5 align-items-center">
+
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h1 class="my-5 display-3 fw-bold ls-tight">
+                        Registro de accidentes <br />
+                    </h1>
+                </div>
+
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                            <form method="post">
+                                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-outline">
+                                            <h1 class="my-14 display-14 fw-bold">Inicio de sesión</h1>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <label asp-for="Credential.Correo"></label>
+                                    <input asp-for="Credential.Correo" type="text" class="form-control">
+                                    <span class="text-danger" asp-validation-for="Credential.Correo"></span>
+                                </div>
+
+                                <!-- Contraseña input -->
+                                <div class="form-outline mb-4">
+                                    <label asp-for="Credential.Contraseña"></label>
+                                    <input asp-for="Credential.Contraseña" type="password" class="form-control">
+                                    <span class="text-danger" asp-validation-for="Credential.Contraseña"></span>
+                                </div>
+
+                                <!-- Submit button -->
+                                <input type="submit" class="btn btn-primary" value="Login" />
+
+                                @if (Model.errorMessage.Length > 0)
+                                {
+                                    <div class="form-outline mb-4" style="padding-top:2rem">
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>@Model.errorMessage</strong>
+                                            <button type="button" class='btn-close' data-bs-dismiss='alert' aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                }
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Jumbotron -->
+</section>
+<!-- Section: Design Block -->

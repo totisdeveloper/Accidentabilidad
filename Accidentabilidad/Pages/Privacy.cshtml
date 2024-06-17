@@ -1,0 +1,35 @@
+﻿@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo Select2</title>
+    <!-- Incluir CSS de Select2 -->
+ 
+</head>
+<body>
+    <select id="mi-select" style="width: 100%;">
+        <option value="1">Opción 1</option>
+        <option value="2">Opción 2</option>
+        <option value="3">Opción 3</option>
+        <option value="4">Opción 4</option>
+    </select>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#mi-select').select2({
+                placeholder: "Selecciona una opción",
+                allowClear: true
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.table-container {
+    max-height: 600px; /* Ajusta esto según tus necesidades */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background: #f1f1f1; /* Fondo del encabezado */
+    z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
+}
