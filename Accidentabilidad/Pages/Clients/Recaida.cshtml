@@ -17,7 +17,7 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Trabajador:</label>
         <div class="col-sm-6">
-            <select class="form-select" id="lista" asp-for="accidente.Nomina" asp-items="@Model.empleados" >
+            <select class="form-select" id="lista" asp-for="accidente.Nomina" asp-items="@Model.empleados">
             </select>
             <span class="text-danger" asp-validation-for="accidente.Nomina"></span>
         </div>
@@ -73,23 +73,26 @@
             <span class="text-danger" asp-validation-for="accidente.Inicio_labores"></span>
         </div>
     </div>
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Días subsidiados</label>
-        <div class="col-sm-6">
-            <input type="number" class="form-control" asp-for="accidente.Dias_subsidiados">
+    @if (Model.usuario.Rol == "1")
+    {
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Días subsidiados</label>
+            <div class="col-sm-6">
+                <input type="number" class="form-control" asp-for="accidente.Dias_subsidiados">
+            </div>
         </div>
-    </div>
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">¿Se reporta?:</label>
-        <div class="col-sm-6">
-            <select class="form-select" asp-for="accidente.Reporta">
-                <option value="">-- Selecciona opción --</option>
-                <option value="SI">SI</option>
-                <option value="NO">NO</option>
-                <option value="DIAS">DÍAS</option>
-            </select>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">¿Se reporta?:</label>
+            <div class="col-sm-6">
+                <select class="form-select" asp-for="accidente.Reporta">
+                    <option value="">-- Selecciona opción --</option>
+                    <option value="SI">SI</option>
+                    <option value="NO">NO</option>
+                    <option value="DIAS">DÍAS</option>
+                </select>
+            </div>
         </div>
-    </div>
+    }
     <div class="row mb-3">
         <div class="offset-sm-3 col-sm-3 d-grid">
             <button type="submit" class='btn btn-primary btn-sm'>Guardar</button>
@@ -139,4 +142,4 @@
         }
 
     </script>
-    }
+}

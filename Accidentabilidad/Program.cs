@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Accidentabilidad;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +18,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //builder.Services.AddRazorPages();
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
 builder.Services.AddRazorPages(options =>
 {
-    options.Conventions.AddFolderApplicationModelConvention("/Pages", model =>
-    {
-        model.Filters.Add(new ServiceFilterAttribute(typeof(SessionCheckFilter)));
-    });
+    //options.Conventions.AddFolderApplicationModelConvention("/Pages", model =>
+    //{
+    //    model.Filters.Add(new ServiceFilterAttribute(typeof(SessionCheckFilter)));
+    //});
 });
 
 builder.Services.AddSession(options =>
@@ -32,7 +36,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddScoped<SessionCheckFilter>();
+//builder.Services.AddScoped<SessionCheckFilter>();
 
 var app = builder.Build();
 

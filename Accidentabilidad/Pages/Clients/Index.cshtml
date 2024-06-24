@@ -70,7 +70,7 @@
                                 @foreach (var item in Model.listAccidentes)
                                 {
                                     <tr>
-                                        <td>@item.Fecha_registro_reporte.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.Fecha_registro_reporte.ToString("dd/MMMM/yyyy")</td>
                                         <td>@item.Folio</td>
                                         <td>@item.Nomina</td>
                                         <td>@item.Empleado</td>
@@ -96,7 +96,10 @@
             @if (Model.usuario.Rol == "1")
             {
                 <div id="DivbtnDescargaReporte">
-                    <button class="btn btn-primary btn-sm" onclick="exportTableToExcel('myTable', 'Listado de accidentes')"><i class="bi bi-file-earmark-arrow-down"></i> Exportar</button>
+                    <form method="post">
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-file-earmark-arrow-down"></i> Exportar</button>
+                    </form>
+                    @* <button class="btn btn-primary btn-sm" onclick="exportTableToExcel('myTable', 'Listado de accidentes')"><i class="bi bi-file-earmark-arrow-down"></i> Exportar</button> *@
                 </div>
             }
         </div>

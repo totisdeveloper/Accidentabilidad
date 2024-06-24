@@ -38,6 +38,7 @@ namespace Accidentabilidad.Pages.Clients
         {
             try
             {
+                getCredenciales();
                 CargaDatos(InputValue);
             }
             catch (Exception ex)

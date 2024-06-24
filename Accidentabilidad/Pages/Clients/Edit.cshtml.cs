@@ -17,6 +17,9 @@ namespace Accidentabilidad.Pages.Clients
         [BindProperty]
         public Accidente accidente { get; set; }
 
+        [BindProperty]
+        public Usuario usuario { get; set; }
+
         public String errorMessage = "";
         public String successMessage = "";
 
@@ -36,6 +39,7 @@ namespace Accidentabilidad.Pages.Clients
         {
             try
             {
+                getCredenciales();
                 CargaDatos();
             }
             catch (Exception ex)
@@ -45,6 +49,12 @@ namespace Accidentabilidad.Pages.Clients
                     errorMessage = "Sesion caducada, es necesario iniciar sesion nuevamente";
                 }
             }
+        }
+
+        private void getCredenciales()
+        {
+            var credenciales = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("Usuario"));
+            usuario = new Usuario() { Correo = credenciales.Correo, Rol = credenciales.Rol };
         }
 
         private void CargaDatos()
