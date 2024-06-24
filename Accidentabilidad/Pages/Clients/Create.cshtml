@@ -3,7 +3,7 @@
 @{
 }
 <br>
-<h2>Nuevo incidente</h2>
+<h2>Nuevo accidente</h2>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,8 +14,7 @@
     <link href="~/css/create.css" rel="stylesheet" />
 </head>
 <body>
-
-    <form method="POST">
+    <form method="POST" id="form_nuevo_accidente">
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <div class="row mb-3">
             <div class="col-sm-3 col-form-label">
@@ -37,18 +36,10 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">Nomina:</label>
-            <div class="col-md-6">
-                <div class="input-group ">
-                    <div class="input-group-text"><i class="bi bi-search"></i></div>
-                    <input type="text" class="form-control" id="InputBuscaNomina" onkeyup="filtrarLista()" placeholder="Buscar">
-                </div>
-            </div>
-        </div>
-        <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Trabajador:</label>
             <div class="col-sm-6">
-                <select class="form-select" id="lista" size="5" asp-for="accidente.Nomina" asp-items="@Model.empleados">
+                <select class="form-control" id="exampleSelect" asp-for="accidente.Nomina" asp-items="Model.empleados">
+                    <option value="">-- Selecciona trabajador --</option>
                 </select>
                 <span class="text-danger" asp-validation-for="accidente.Nomina"></span>
             </div>
@@ -78,12 +69,15 @@
                 <span class="text-danger" asp-validation-for="accidente.Diagnostico"></span>
             </div>
         </div>
-        <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">IPP:</label>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" asp-for="accidente.IPP">
+        @if (Model.usuario.Rol == "1")
+        {
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">IPP:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" asp-for="accidente.IPP">
+                </div>
             </div>
-        </div>
+        }
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Calificación:</label>
             <div class="col-sm-6">
@@ -125,7 +119,6 @@
                 </div>
             </div>
         }
-
         <div class="row mb-3">
             <div class="offset-sm-3 col-sm-3 d-grid">
                 <button type="submit" class='btn btn-primary btn-sm'>Guardar</button>
@@ -134,7 +127,6 @@
                 <a class='btn btn-outline-primary btn-sm' href='/Clients' role="button">Cancelar</a>
             </div>
         </div>
-
         @if (Model.successMessage.Length > 0)
         {
             <div class="row mb-3">
@@ -146,7 +138,6 @@
                 </div>
             </div>
         }
-
         @if (Model.errorMessage.Length > 0)
         {
             <div class="row mb-3">
@@ -158,15 +149,11 @@
                 </div>
             </div>
         }
-
     </form>
-
 
     @section Scripts {
         <script src="~/js/create.js"></script>
-
     }
-
     <script>
         var secondOptions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.calificaciones_));
 
@@ -189,7 +176,6 @@
             }
         }
     </script>
-
 </body>
 </html>
 

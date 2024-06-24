@@ -3,25 +3,16 @@
 @{
 }
 <br>
-<h2>Editar incidente</h2>
-
-<form method="POST">
+<h2>Editar accidente</h2>
+<link href="~/css/edit.css" rel="stylesheet" />
+<form method="POST" id="form_editar_accidente">
     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-
     <input type="hidden" asp-for="accidente.ID">
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">Nomina:</label>
-        <div class="col-md-6">
-            <div class="input-group ">
-                <div class="input-group-text"><i class="bi bi-search"></i></div>
-                <input type="text" class="form-control" id="InputBuscaNomina" onkeyup="filtrarLista()" placeholder="Buscar">
-            </div>
-        </div>
-    </div>
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Trabajador:</label>
         <div class="col-sm-6">
-            <select class="form-select" id="lista" asp-for="accidente.Nomina" asp-items="@Model.empleados">
+            <select class="form-control" id="exampleSelect" asp-for="accidente.Nomina" asp-items="Model.empleados">
+                <option value="">-- Selecciona trabajador --</option>
             </select>
             <span class="text-danger" asp-validation-for="accidente.Nomina"></span>
         </div>
@@ -34,14 +25,6 @@
             <span class="text-danger" asp-validation-for="accidente.Area_ID"></span>
         </div>
     </div>
-    @*       <div class="row mb-3">
-    <label class="col-sm-3 col-form-label">Atención:</label>
-    <div class="col-sm-6">
-    <select class="form-select" asp-for="accidente.Atencion" asp-items="@Model.atencion">
-    </select>
-    <span class="text-danger" asp-validation-for="accidente.Atencion"></span>
-    </div>
-    </div> *@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Atención:</label>
         <div class="col-sm-6">
@@ -63,15 +46,6 @@
             <input type="text" class="form-control" asp-for="accidente.IPP">
         </div>
     </div>
-    @*     <div class="row mb-3">
-    <label class="col-sm-3 col-form-label">Calificación:</label>
-    <div class="col-sm-6">
-    <select id="secondSelect" class="form-select" asp-for="accidente.Calificacion_ID">
-    </select>
-    <span class="text-danger" asp-validation-for="accidente.Calificacion_ID"></span>
-    </div>
-    asp-items="@Model.calificaciones"
-    </div> *@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Calificación:</label>
         <div class="col-sm-6">
@@ -152,22 +126,10 @@
 
 @section Scripts {
     <script>
-        function filtrarLista() {
-            var input, filter, ul, li, a, i, txtValue;
-            input = document.getElementById('InputBuscaNomina');
-            filter = input.value.toUpperCase();
-            select = document.getElementById("lista");
-            options = select.getElementsByTagName('option');
 
-            for (i = 0; i < options.length; i++) {
-                txtValue = options[i].textContent || options[i].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    options[i].style.display = "";
-                } else {
-                    options[i].style.display = "none";
-                }
-            }
-        }
+        $(document).ready(function () {
+            $('#exampleSelect').select2();
+        })
 
         var secondOptions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.calificaciones_));
 
@@ -189,9 +151,5 @@
                 });
             }
         }
-
-
-
-
     </script>
 }
