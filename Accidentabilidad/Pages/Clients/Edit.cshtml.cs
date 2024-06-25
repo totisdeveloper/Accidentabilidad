@@ -106,7 +106,7 @@ namespace Accidentabilidad.Pages.Clients
                             Calificacion = reader.GetString("Calificacion"),
                             IPP = !reader.IsDBNull(reader.GetOrdinal("IPP")) ? reader.GetString(reader.GetOrdinal("IPP")) : null,
                             Incapacidad_inicial_date = !reader.IsDBNull(reader.GetOrdinal("Incapacidad_inicial")) ? reader.GetDateTime(reader.GetOrdinal("Incapacidad_inicial")) : null,
-                            Inicio_labores_date = !reader.IsDBNull(reader.GetOrdinal("Inicio_labores")) ? reader.GetDateTime(reader.GetOrdinal("Inicio_labores")): null,
+                            Inicio_labores_date = !reader.IsDBNull(reader.GetOrdinal("Inicio_labores")) ? reader.GetDateTime(reader.GetOrdinal("Inicio_labores")) : null,
                             Dias_subsidiados = reader.GetInt32("Dias_subsidiados"),
                             Reporta = !reader.IsDBNull(reader.GetOrdinal("Reporta")) ? reader.GetString(reader.GetOrdinal("Reporta")) : null
                         };
@@ -244,7 +244,7 @@ namespace Accidentabilidad.Pages.Clients
             try
             {
                 con.Open();
-                var login_usuario = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("Usuario")).Correo;
+                var login_usuario = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("Usuario"));
 
                 string? Incapacidad_inicial = accidente.Incapacidad_inicial_date == null ? "" : accidente.Incapacidad_inicial_date.ToString();
                 string? Inicio_labores = accidente.Inicio_labores_date == null ? "" : accidente.Inicio_labores_date.ToString();
@@ -253,13 +253,18 @@ namespace Accidentabilidad.Pages.Clients
                 string Reporta = accidente.Reporta == null ? "" : accidente.Reporta.ToString();
                 string IPP = accidente.IPP == null ? "" : accidente.IPP.ToString();
 
+                if (login_usuario.Rol != "1")
+                {
+                    Dias_subsidiados = obtenerDias(Incapacidad_inicial, Inicio_labores);
+                }
+
                 if (ModelState.IsValid)
                 {
                     SqlCommand cmd = new SqlCommand("SP_Rep_accidentes_UPDATE", con);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@id", accidente.ID));
                     cmd.Parameters.Add(new SqlParameter("@Fecha_registro_reporte", DateTime.Now));
-                    cmd.Parameters.Add(new SqlParameter("@Correo_login", login_usuario));
+                    cmd.Parameters.Add(new SqlParameter("@Correo_login", login_usuario.Correo));
                     cmd.Parameters.Add(new SqlParameter("@Nomina", accidente.Nomina));
                     cmd.Parameters.Add(new SqlParameter("@Area_ID", accidente.Area_ID));
                     cmd.Parameters.Add(new SqlParameter("@Atencion_ID", accidente.Atencion_ID));
@@ -305,6 +310,24 @@ namespace Accidentabilidad.Pages.Clients
             {
                 con.Close();
             }
+        }
+
+        private string obtenerDias(string fecha_Inicial, string fecha_Final)
+        {
+            int dias = 0;
+
+            if (fecha_Inicial != "" && fecha_Final != "")
+            {
+                DateTime fechaInicial = Convert.ToDateTime(fecha_Inicial);
+                DateTime fechaFinal = Convert.ToDateTime(fecha_Final);
+
+                // Calcular la diferencia de días
+                TimeSpan diferencia = fechaFinal.Subtract(fechaInicial);
+
+                // Obtener el número de días
+                dias = diferencia.Days;
+            }
+            return dias.ToString();
         }
     }
 }

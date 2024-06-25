@@ -243,6 +243,11 @@ namespace Accidentabilidad.Pages.Clients
             string Reporta = accidente.Reporta == null ? "" : accidente.Reporta.ToString();
             string Atencion = accidente.Atencion == null ? "" : accidente.Atencion.ToString();
 
+            if (usuario.Rol != "1")
+            {
+                Dias_subsidiados = obtenerDias(Incapacidad_inicial, Inicio_labores);
+            }
+
             try
             {
                 if (ModelState.IsValid)
@@ -291,6 +296,24 @@ namespace Accidentabilidad.Pages.Clients
             {
                 con.Close();
             }
+        }
+
+        private string obtenerDias(string fecha_Inicial, string fecha_Final)
+        {
+            int dias = 0;
+
+            if (fecha_Inicial != "" && fecha_Final != "")
+            {
+                DateTime fechaInicial = Convert.ToDateTime(fecha_Inicial);
+                DateTime fechaFinal = Convert.ToDateTime(fecha_Final);
+
+                // Calcular la diferencia de días
+                TimeSpan diferencia = fechaFinal.Subtract(fechaInicial);
+
+                // Obtener el número de días
+                dias = diferencia.Days;
+            }
+            return dias.ToString();
         }
     }
 }
