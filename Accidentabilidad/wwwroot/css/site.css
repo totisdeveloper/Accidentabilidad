@@ -34,20 +34,16 @@ body {
   color: #4f4f4f;
 }
 
-
 .navbar-scroll,
 .navbar-scrolled {
   background-color: #62b424;
 }
-
 
 .navbar.navbar-scroll.navbar-scrolled {
   padding-top: 5px;
   padding-bottom: 5px;
 
 }
-
-
 
 .button-56{
   background:#1AAB8A;
@@ -86,5 +82,5 @@ body {
   width:100%;
   transition:800ms ease all;
 }
-*/*/
+
 

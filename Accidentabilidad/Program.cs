@@ -11,55 +11,25 @@ using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-//    builder.Configuration.GetConnectionString("DefaultConnection")));
-
-//DotEnv.Load();
-
-// Add services to the container.
-//builder.Services.AddRazorPages();
-
-ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-builder.Services.AddRazorPages(options =>
-{
-    //options.Conventions.AddFolderApplicationModelConvention("/Pages", model =>
-    //{
-    //    model.Filters.Add(new ServiceFilterAttribute(typeof(SessionCheckFilter)));
-    //});
-});
-
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromMinutes(20); // Duración de la sesión
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
-//builder.Services.AddScoped<SessionCheckFilter>();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
-{
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
-}
-
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseSession();
-
 app.UseAuthorization();
+
+app.UseMiddleware<SessionExpiredMiddleware>();
 
 app.MapRazorPages();
 

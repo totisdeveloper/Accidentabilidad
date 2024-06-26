@@ -1,0 +1,29 @@
+﻿@page
+@model SessionExpiredModel
+@{
+    ViewData["Title"] = "Sesión Expirada";
+    Layout = "_LayoutLogin";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión Expirada</title>
+    <link href="~/css/sessionexpired.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h2>Sesión Expirada</h2>
+        <p>Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.</p>
+        <div class="row" id="div_button">
+            <div class="col-md-12">
+                <form method="post" asp-page="/Account/LogOut">
+                    <button type="submit" class="button-37"><i class="bi bi-box-arrow-right"></i> Ir a inicio de sesión </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
