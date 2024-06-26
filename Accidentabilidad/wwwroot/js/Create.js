@@ -1,6 +1,6 @@
-﻿ $(document).ready(function () {
-     $('#exampleSelect').select2();
- })
+﻿$(document).ready(function () {
+    $('#exampleSelect').select2();
+})
 
 function toggleDiv() {
     var div = document.getElementById("myDiv");
@@ -13,9 +13,21 @@ function toggleDiv() {
 }
 
 document.getElementById('btnBuscarFolio').addEventListener('click', function () {
+
     var inputValue = document.getElementById('BuscaFolio').value;
-    var link = `/Clients/Recaida?inputValue=${encodeURIComponent(inputValue)}`;
-    window.location.href = link;
+
+    if (inputValue != '') {
+        if (inputValue.length == 18) {
+            var link = `/Clients/Recaida?inputValue=${encodeURIComponent(inputValue)}`;
+            window.location.href = link;
+        }
+        else {
+            alert("Número de folio invalido")
+        }
+    }
+    else {
+        alert("Ingrese número de folio")
+    }
 });
 
 

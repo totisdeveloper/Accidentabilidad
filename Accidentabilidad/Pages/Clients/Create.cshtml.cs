@@ -34,8 +34,6 @@ namespace Accidentabilidad.Pages.Clients
 
         public Dictionary<string, List<SelectListItem>> calificaciones_ { get; set; }
 
-
-
         [BindProperty]
         public Usuario usuario { get; set; }
 
@@ -51,13 +49,7 @@ namespace Accidentabilidad.Pages.Clients
             }
             catch (Exception ex)
             {
-
                 errorMessage = ex.Message;
-
-                if (ex.Message == "Value cannot be null. (Parameter 'value')")
-                {
-                    errorMessage = "Sesion caducada, es necesario cerrar sesion e iniciar sesion nuevamente";
-                }
             }
         }
 
@@ -75,7 +67,6 @@ namespace Accidentabilidad.Pages.Clients
             atencion = getItems("SP_Cat_atencion_SELECT");
             calificaciones_ = getItemsCalificacion();
         }
-
 
         private Dictionary<string, List<SelectListItem>> getItemsCalificacion()
         {
@@ -228,15 +219,7 @@ namespace Accidentabilidad.Pages.Clients
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-
-                if (ex.Message == "Value cannot be null. (Parameter 'value')")
-                {
-                    errorMessage = "Sesion caducada, es necesario cerrar sesion e iniciar sesion nuevamente";
-                }
-                else
-                {
-                    carga_listbox();
-                }
+                carga_listbox();
             }
             finally
             {

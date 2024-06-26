@@ -16,6 +16,7 @@ namespace Accidentabilidad.Pages.Account
         public void OnGet()
         {
             HttpContext.SignOutAsync();
+            HttpContext.Session.Clear();
             // Redirigir a la página de inicio o a otra página deseada
             Response.Redirect("/");
         }
@@ -23,6 +24,7 @@ namespace Accidentabilidad.Pages.Account
         public void OnPost() 
         {
             HttpContext.SignOutAsync();
+            HttpContext.Session.Clear();
             // Redirigir a la página de inicio o a otra página deseada
             Response.Redirect("/");
         }
