@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Data;
 using System.Data.SqlClient;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Services;
 
 namespace Accidentabilidad.Pages.Clients
@@ -25,10 +26,19 @@ namespace Accidentabilidad.Pages.Clients
 
         public List<SelectListItem> empleados = new List<SelectListItem>();
         public List<SelectListItem> areas = new List<SelectListItem>();
-        public List<SelectListItem> calificaciones = new List<SelectListItem>();
-        public List<SelectListItem> atencion = new List<SelectListItem>();
 
-        public Dictionary<string, List<SelectListItem>> calificaciones_ { get; set; }
+        public List<SelectListItem> atencion = new List<SelectListItem>();
+        public List<Calificacion> Cities { get; set; }
+
+        [BindProperty]
+        public int SelectedCountryId { get; set; }
+
+        [BindProperty]
+        public int SelectedCityId { get; set; }
+
+        [BindProperty]
+        public int SelectedCityId_ { get; set; }
+
 
         public EditModel(IConfiguration configuration)
         {
@@ -44,10 +54,7 @@ namespace Accidentabilidad.Pages.Clients
             }
             catch (Exception ex)
             {
-                if (ex.Message == "Value cannot be null. (Parameter 'value')")
-                {
-                    errorMessage = "Sesion caducada, es necesario iniciar sesion nuevamente";
-                }
+                errorMessage = ex.Message;
             }
         }
 
@@ -59,13 +66,10 @@ namespace Accidentabilidad.Pages.Clients
 
         private void CargaDatos()
         {
-            var login_usuario = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("Usuario")).Correo;
-
             empleados = getItems("sp_Cat_empleados_SELECT");
             areas = getItems("SP_Cat_areas_SELECT");
             atencion = getItems("SP_Cat_atencion_SELECT");
-            //calificaciones = getItems("SP_Cat_calificacion_SELECT");
-            calificaciones_ = getItemsCalificacion();
+            carga_calificacion();
 
             int id = Convert.ToInt32(Request.Query["ID"]);
 
@@ -83,13 +87,6 @@ namespace Accidentabilidad.Pages.Clients
                 {
                     while (reader.Read())
                     {
-
-
-                        calificaciones.Add(new SelectListItem
-                        {
-                            Value = reader.GetInt32("Calificacion_ID").ToString(),
-                            Text = reader.GetString("Calificacion")
-                        });
 
                         accidente = new Accidente()
                         {
@@ -110,6 +107,8 @@ namespace Accidentabilidad.Pages.Clients
                             Dias_subsidiados = reader.GetInt32("Dias_subsidiados"),
                             Reporta = !reader.IsDBNull(reader.GetOrdinal("Reporta")) ? reader.GetString(reader.GetOrdinal("Reporta")) : null
                         };
+
+                        SelectedCityId_ = reader.GetInt32("Calificacion_ID");
                     }
                     reader.Close();
                 }
@@ -124,38 +123,40 @@ namespace Accidentabilidad.Pages.Clients
             }
         }
 
-        private Dictionary<string, List<SelectListItem>> getItemsCalificacion()
+        private void carga_calificacion()
         {
-            calificaciones_ = new Dictionary<string, List<SelectListItem>>
-            {
-                {
-                    /* IMSS */
-                    "1", new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "3", Text = "SI DE TRABAJO" },
-                        new SelectListItem { Value = "4", Text = "NO DE TRABAJO" },
-                        new SelectListItem { Value = "9", Text = "PENDIENTE DE TRABAJO" },
-                    }
-                },
-                {
-                    /* INTERNO */
-                    "2", new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "2", Text = "INTERNO" }
-                    }
-                },
-                {
-                    /* TRAYECTO */
-                    "4", new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "7", Text = "SI DE TRAYECTO" },
-                        new SelectListItem { Value = "5", Text = "NO DE TRAYECTO" },
-                        new SelectListItem { Value = "10", Text = "PENDIENTE DE TRAYECTO" }
-                    }
-                }
-            };
+            Cities = new List<Calificacion>();
 
-            return calificaciones_;
+            string connectionString = configuration_.GetConnectionString("DefaultConnection");
+            SqlConnection con = new SqlConnection(connectionString);
+
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SP_Cat_calificacion_SELECT", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Cities.Add(new Calificacion
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                            Name = reader.GetString(reader.GetOrdinal("Calificacion")),
+                            CountryId = reader.GetInt32(reader.GetOrdinal("Atencion_ID"))
+                        });
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            finally
+            {
+                con.Close();
+            }
         }
 
         private List<SelectListItem> getItems(string storeName)
@@ -197,14 +198,6 @@ namespace Accidentabilidad.Pages.Clients
                                 });
                                 break;
 
-                            case "SP_Cat_calificacion_SELECT":
-                                opciones.Add(new SelectListItem
-                                {
-                                    Value = reader["id"].ToString(),
-                                    Text = reader["Calificacion"].ToString()
-                                });
-                                break;
-
                             case "SP_Cat_atencion_SELECT":
 
                                 var id_ = reader["id"].ToString();
@@ -237,7 +230,6 @@ namespace Accidentabilidad.Pages.Clients
 
         public void OnPost()
         {
-
             string connectionString = configuration_.GetConnectionString("DefaultConnection");
             SqlConnection con = new SqlConnection(connectionString);
 
@@ -249,7 +241,7 @@ namespace Accidentabilidad.Pages.Clients
                 string? Incapacidad_inicial = accidente.Incapacidad_inicial_date == null ? "" : accidente.Incapacidad_inicial_date.ToString();
                 string? Inicio_labores = accidente.Inicio_labores_date == null ? "" : accidente.Inicio_labores_date.ToString();
                 string? Dias_subsidiados = accidente.Dias_subsidiados == null ? "" : accidente.Dias_subsidiados.ToString();
-                string Atencion = accidente.Atencion == null ? "" : accidente.Atencion.ToString();
+                string Atencion = accidente.Atencion_ID == null ? "" : accidente.Atencion_ID.ToString();
                 string Reporta = accidente.Reporta == null ? "" : accidente.Reporta.ToString();
                 string IPP = accidente.IPP == null ? "" : accidente.IPP.ToString();
 
@@ -281,30 +273,12 @@ namespace Accidentabilidad.Pages.Clients
                 }
                 else
                 {
-
-                    //foreach (var modelStateKey in ModelState.Keys)
-                    //{
-                    //    var modelStateVal = ModelState[modelStateKey];
-                    //    foreach (var error in modelStateVal.Errors)
-                    //    {
-                    //        // Aquí puedes manejar o registrar los errores como necesites
-                    //        errorMessage  = error.ErrorMessage;
-                    //        // Por ejemplo, puedes agregarlos a una lista para mostrar en la página
-                    //    }
-                    //}
-
-
                     CargaDatos();
                 }
             }
             catch (Exception ex)
             {
                 errorMessage = ex.Message;
-
-                if (ex.Message == "Value cannot be null. (Parameter 'value')")
-                {
-                    errorMessage = "Sesion caducada, es necesario cerrar sesion e iniciar sesion nuevamente";
-                }
             }
             finally
             {

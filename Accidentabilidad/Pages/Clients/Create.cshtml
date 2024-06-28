@@ -56,7 +56,7 @@
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Atención:</label>
             <div class="col-sm-6">
-                <select id="firstSelect" class=" form-select" asp-for="accidente.Atencion_ID" asp-items="@Model.atencion" onchange="updateSecondSelect()">
+                <select id="country" class="form-select" asp-for="accidente.Atencion_ID" asp-items="@Model.atencion" onchange="filterCities()">
                     <option value="">-- Selecciona Atención --</option>
                 </select>
                 <span class="text-danger" asp-validation-for="accidente.Atencion_ID"></span>
@@ -81,7 +81,8 @@
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Calificación:</label>
             <div class="col-sm-6">
-                <select id="secondSelect" class="form-select" asp-for="accidente.Calificacion_ID">
+                <select id="city" class="form-select" asp-for="accidente.Calificacion_ID">
+                    <option value="">--Seleccione calificacion--</option>
                 </select>
                 <span class="text-danger" asp-validation-for="accidente.Calificacion_ID"></span>
             </div>
@@ -155,26 +156,26 @@
         <script src="~/js/create.js"></script>
     }
     <script>
-        var secondOptions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.calificaciones_));
+        const cities = @Html.Raw(Json.Serialize(Model.Cities));
 
-        function updateSecondSelect() {
-            var firstSelect = document.getElementById("firstSelect");
-            var secondSelect = document.getElementById("secondSelect");
-            var selectedValue = firstSelect.value;
+        function filterCities() {
+            const selectedCountryId = document.getElementById("country").value;
+            const citySelect = document.getElementById("city");
 
-            // Limpiar las opciones actuales del segundo select
-            secondSelect.innerHTML = '<option value="">--Selecciona calificación--</option>';
 
-            if (selectedValue && secondOptions[selectedValue]) {
-                // Añadir nuevas opciones basadas en la selección del primer select
-                secondOptions[selectedValue].forEach(function (option) {
-                    var opt = document.createElement('option');
-                    opt.value = option.Value;
-                    opt.text = option.Text;
-                    secondSelect.appendChild(opt);
+            citySelect.innerHTML = '<option value="">--Seleccione calificacion--</option>';
+
+            if (cities) {
+                cities.filter(city => city.countryId == selectedCountryId).forEach(city => {
+                    let option = document.createElement("option");
+                    option.value = city.id;
+                    option.text = city.name;
+                    citySelect.add(option);
                 });
             }
         }
+        // Call filterCities on page load to set the city dropdown if editing
+        filterCities();
     </script>
 </body>
 </html>

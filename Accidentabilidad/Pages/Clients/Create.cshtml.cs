@@ -30,9 +30,14 @@ namespace Accidentabilidad.Pages.Clients
         public List<SelectListItem> empleados = new List<SelectListItem>();
         public List<SelectListItem> areas = new List<SelectListItem>();
         public List<SelectListItem> calificaciones = new List<SelectListItem>();
-        public List<SelectListItem> atencion = new List<SelectListItem>();
+        public List<SelectListItem> atencion = new List<SelectListItem>(); 
+        public List<Calificacion> Cities { get; set; }
 
-        public Dictionary<string, List<SelectListItem>> calificaciones_ { get; set; }
+        [BindProperty]
+        public int SelectedCountryId { get; set; }
+
+        [BindProperty]
+        public int SelectedCityId { get; set; }
 
         [BindProperty]
         public Usuario usuario { get; set; }
@@ -63,43 +68,44 @@ namespace Accidentabilidad.Pages.Clients
         {
             empleados = getItems("sp_Cat_empleados_SELECT");
             areas = getItems("SP_Cat_areas_SELECT");
-            //calificaciones = getItems("SP_Cat_calificacion_SELECT");
             atencion = getItems("SP_Cat_atencion_SELECT");
-            calificaciones_ = getItemsCalificacion();
+            carga_calificacion();
         }
 
-        private Dictionary<string, List<SelectListItem>> getItemsCalificacion()
+        private void carga_calificacion()
         {
-            calificaciones_ = new Dictionary<string, List<SelectListItem>>
-            {
-                {
-                    /* IMSS */
-                    "1", new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "3", Text = "SI DE TRABAJO" },
-                        new SelectListItem { Value = "4", Text = "NO DE TRABAJO" },
-                        new SelectListItem { Value = "9", Text = "PENDIENTE DE TRABAJO" },
-                    }
-                },
-                {
-                    /* INTERNO */
-                    "2", new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "2", Text = "INTERNO" }
-                    }
-                },
-                {
-                    /* TRAYECTO */
-                    "4", new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "7", Text = "SI DE TRAYECTO" },
-                        new SelectListItem { Value = "5", Text = "NO DE TRAYECTO" },
-                        new SelectListItem { Value = "10", Text = "PENDIENTE DE TRAYECTO" }
-                    }
-                }
-            };
+            Cities = new List<Calificacion>();
 
-            return calificaciones_;
+            string connectionString = configuration_.GetConnectionString("DefaultConnection");
+            SqlConnection con = new SqlConnection(connectionString);
+
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand("SP_Cat_calificacion_SELECT", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Cities.Add(new Calificacion
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("ID")),
+                            Name = reader.GetString(reader.GetOrdinal("Calificacion")),
+                            CountryId = reader.GetInt32(reader.GetOrdinal("Atencion_ID"))
+                        });
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                con.Close();
+            }
         }
 
         private List<SelectListItem> getItems(string storeName)
@@ -136,14 +142,6 @@ namespace Accidentabilidad.Pages.Clients
                                 });
                                 break;
 
-                            case "SP_Cat_calificacion_SELECT":
-                                opciones.Add(new SelectListItem
-                                {
-                                    Value = reader["id"].ToString(),
-                                    Text = reader["Calificacion"].ToString()
-                                });
-                                break;
-
                             case "SP_Cat_atencion_SELECT":
                                 opciones.Add(new SelectListItem
                                 {
@@ -162,7 +160,6 @@ namespace Accidentabilidad.Pages.Clients
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception: " + ex.ToString());
                 return opciones;
             }
             finally

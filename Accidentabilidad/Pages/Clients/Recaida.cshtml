@@ -4,8 +4,8 @@
 }
 
 <h2>Nueva recaida</h2>
-
-<form method="POST">
+<link href="~/css/recaida.css" rel="stylesheet" />
+<form method="POST" id="form_accidente_reciada">
     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
     <div class="row mb-3">
@@ -17,7 +17,8 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Trabajador:</label>
         <div class="col-sm-6">
-            <select class="form-select" id="lista" asp-for="accidente.Nomina" asp-items="@Model.empleados">
+            <select class="form-control" id="exampleSelect" asp-for="accidente.Nomina" asp-items="Model.empleados">
+                <option value="">-- Selecciona trabajador --</option>
             </select>
             <span class="text-danger" asp-validation-for="accidente.Nomina"></span>
         </div>
@@ -33,7 +34,7 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Atención:</label>
         <div class="col-sm-6">
-            <select id="firstSelect" class=" form-select" asp-for="accidente.Atencion_ID" asp-items="@Model.atencion" onchange="updateSecondSelect()">
+            <select id="country" class="form-select" asp-for="accidente.Atencion_ID" asp-items="@Model.atencion" onchange="filterCities()">
             </select>
             <span class="text-danger" asp-validation-for="accidente.Atencion_ID"></span>
         </div>
@@ -54,7 +55,8 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Calificación:</label>
         <div class="col-sm-6">
-            <select id="secondSelect" class="form-select" asp-for="accidente.Calificacion_ID" asp-items="@Model.calificaciones">
+            <select id="city" class="form-select" asp-for="accidente.Calificacion_ID">
+                <option value="">--Seleccione calificacion--</option>
             </select>
             <span class="text-danger" asp-validation-for="accidente.Calificacion_ID"></span>
         </div>
@@ -119,27 +121,35 @@
 
 @section Scripts {
     <script>
+        $(document).ready(function () {
+            $('#exampleSelect').select2();
+        })
+        const cities = @Html.Raw(Json.Serialize(Model.Cities));
 
-        var secondOptions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.calificaciones_));
+        function filterCities() {
+            const selectedCountryId = document.getElementById("country").value;
+            const citySelect = document.getElementById("city");
 
-        function updateSecondSelect() {
-            var firstSelect = document.getElementById("firstSelect");
-            var secondSelect = document.getElementById("secondSelect");
-            var selectedValue = firstSelect.value;
 
-            // Limpiar las opciones actuales del segundo select
-            secondSelect.innerHTML = '<option value="">--Selecciona calificación--</option>';
+            citySelect.innerHTML = '<option value="">--Seleccione calificacion--</option>';
 
-            if (selectedValue && secondOptions[selectedValue]) {
-                // Añadir nuevas opciones basadas en la selección del primer select
-                secondOptions[selectedValue].forEach(function (option) {
-                    var opt = document.createElement('option');
-                    opt.value = option.Value;
-                    opt.text = option.Text;
-                    secondSelect.appendChild(opt);
+            if (cities) {
+                cities.filter(city => city.countryId == selectedCountryId).forEach(city => {
+                    let option = document.createElement("option");
+                    option.value = city.id;
+                    option.text = city.name;
+                    citySelect.add(option);
                 });
             }
+
+            // Set the selected city if editing
+            const selectedCityId = '@Model.SelectedCityId_';
+            if (selectedCityId) {
+                citySelect.value = selectedCityId;
+            }
         }
+        // Call filterCities on page load to set the city dropdown if editing
+        filterCities();
 
     </script>
 }

@@ -1,0 +1,10 @@
+#form_accidente_reciada {
+    border: 2px solid black; /* Cambia el color y grosor del borde según sea necesario */
+    padding: 20px; /* Agrega relleno dentro del borde */
+    margin: 20px; /* Espacio fuera del borde */
+    border-radius: 10px; /* Opcional: redondear las esquinas */
+}
+h2
+{
+    padding-left:1rem;
+}
