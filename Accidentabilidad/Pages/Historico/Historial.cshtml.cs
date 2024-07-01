@@ -1,6 +1,7 @@
 using Accidentabilidad.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -10,6 +11,9 @@ namespace Accidentabilidad.Pages.Historico
     {
         public readonly IConfiguration configuration_;
 
+        [BindProperty]
+        public Usuario usuario { get; set; }
+
         public HistorialModel(IConfiguration configuration)
         {
             configuration_ = configuration;
@@ -17,8 +21,16 @@ namespace Accidentabilidad.Pages.Historico
 
         public List<Accidente> listAccidentes = new List<Accidente>();
         public String errorMessage = "";
+
+
+        private void getCredenciales()
+        {
+            var credenciales = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("Usuario"));
+            usuario = new Usuario() { Correo = credenciales.Correo, Rol = credenciales.Rol };
+        }
         public void OnGet()
         {
+            getCredenciales();
 
             string connectionString = configuration_.GetConnectionString("DefaultConnection");
             SqlConnection con = new SqlConnection(connectionString);
@@ -27,6 +39,7 @@ namespace Accidentabilidad.Pages.Historico
                 con.Open();
                 SqlCommand cmd = new SqlCommand("SP_Rep_accidentes_historial_cambios_SELECT", con);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@Rol", usuario.Rol));
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
