@@ -10,7 +10,6 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Accidentabilidad.Pages.Clients
 {
-    //[ServiceFilter(typeof(SessionCheckFilter))]
     public class IndexModel : PageModel
     {
         public readonly IConfiguration configuration_;
@@ -56,6 +55,7 @@ namespace Accidentabilidad.Pages.Clients
                 con.Open();
                 SqlCommand cmd = new SqlCommand("SP_Rep_accidentes_SELECT", con);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add(new SqlParameter("@Rol", usuario.Rol));
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

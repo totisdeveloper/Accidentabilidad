@@ -75,7 +75,7 @@
             <span class="text-danger" asp-validation-for="accidente.Inicio_labores"></span>
         </div>
     </div>
-    @if (Model.usuario.Rol == "1")
+    @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
     {
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Días subsidiados</label>

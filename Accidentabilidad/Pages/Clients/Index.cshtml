@@ -29,7 +29,7 @@
                             <a class='btn btn-primary btn-sm' href='/Clients/Create' style="width:100%"><i class="bi bi-plus-lg"></i> Nuevo accidente</a>
                         </div>
                         <div class="col-md-5">
-                            @if (Model.usuario.Rol == "1")
+                            @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
                             {
                                 <a class='btn btn-primary btn-sm' href="/Historico/Historial" style="width:100%"><i class="bi bi-hourglass-split"></i> Control de cambios</a>
                             }
@@ -70,7 +70,7 @@
                                 @foreach (var item in Model.listAccidentes)
                                 {
                                     <tr>
-                                        <td>@item.Fecha_registro_reporte.ToString("dd/MMMM/yyyy")</td>
+                                        <td>@item.Fecha_registro_reporte.ToString("dd/MM/yyyy")</td>
                                         <td>@item.Folio</td>
                                         <td>@item.Nomina</td>
                                         <td>@item.Empleado</td>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            @if (Model.usuario.Rol == "1")
+            @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
             {
                 <div id="DivbtnDescargaReporte">
                     <form method="post">
