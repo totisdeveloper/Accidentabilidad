@@ -50,7 +50,9 @@
                         <table id="myTable" class="table table-sm table-bordered " style="padding-top:2rem">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Fecha registro</th>
+                                    @* <th>id</th> *@
+                                    <th>Fecha ocurrencia</th>
+                                    <th>Mes reporte</th>
                                     <th>Folio</th>
                                     <th># Nomina</th>
                                     <th>Trabajador</th>
@@ -70,7 +72,9 @@
                                 @foreach (var item in Model.listAccidentes)
                                 {
                                     <tr>
-                                        <td>@item.Fecha_registro_reporte.ToString("dd/MM/yyyy")</td>
+                                        @* <td>@item.ID</td> *@
+                                        <td>@item.Fecha_ocurrencia</td>
+                                        <td>@item.Fecha_registro_reporte.ToString("MMMM").ToUpper()</td>
                                         <td>@item.Folio</td>
                                         <td>@item.Nomina</td>
                                         <td>@item.Empleado</td>

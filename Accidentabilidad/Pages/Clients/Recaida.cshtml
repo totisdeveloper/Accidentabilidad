@@ -15,6 +15,13 @@
         </div>
     </div>
     <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Fecha en que ocurrio el accidente:</label>
+        <div class="col-sm-6">
+            <input id="fecha_ocurrencia" class="form-control" type="date" asp-for="accidente.Fecha_ocurrencia" />
+            <span class="text-danger" asp-validation-for="accidente.Fecha_ocurrencia"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Trabajador:</label>
         <div class="col-sm-6">
             <select class="form-control" id="exampleSelect" asp-for="accidente.Nomina" asp-items="Model.empleados">
@@ -64,10 +71,17 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Incapacidad inicial:</label>
         <div class="col-sm-6">
-            <input class="form-control" type="date" asp-for="accidente.Incapacidad_inicial" />
+            <input class="form-control" type="date" asp-for="accidente.Incapacidad_inicial_date" />
             <span class="text-danger" asp-validation-for="accidente.Incapacidad_inicial"></span>
         </div>
     </div>
+    @*     <div class="row mb-3">
+    <label class="col-sm-3 col-form-label">Incapacidad inicial:</label>
+    <div class="col-sm-6">
+    <input class="form-control" type="date" asp-for="accidente.Incapacidad_inicial" />
+    <span class="text-danger" asp-validation-for="accidente.Incapacidad_inicial"></span>
+    </div>
+    </div> *@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Inicio de labores:</label>
         <div class="col-sm-6">
@@ -90,7 +104,7 @@
                     <option value="">-- Selecciona opción --</option>
                     <option value="SI">SI</option>
                     <option value="NO">NO</option>
-                    <option value="DIAS">DÍAS</option>
+                    <option value="DIAS">SOLO DÍAS</option>
                 </select>
             </div>
         </div>

@@ -91,6 +91,7 @@ namespace Accidentabilidad.Pages.Clients
                         accidente = new Accidente()
                         {
                             ID = reader.GetInt32("ID"),
+                            Fecha_ocurrencia = !reader.IsDBNull(reader.GetOrdinal("Fecha_ocurrencia")) ? reader.GetDateTime(reader.GetOrdinal("Fecha_ocurrencia")) : null,
                             Fecha_registro_reporte = reader.GetDateTime("Fecha_registro_reporte"),
                             Nomina = reader.GetString("nomina"),
                             Empleado = reader.GetString("nomina") + " " + reader.GetString("nombre"),
@@ -151,7 +152,7 @@ namespace Accidentabilidad.Pages.Clients
             }
             catch (Exception ex)
             {
-                
+
             }
             finally
             {
@@ -238,6 +239,7 @@ namespace Accidentabilidad.Pages.Clients
                 con.Open();
                 var login_usuario = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("Usuario"));
 
+                var fecha_ocurrencia = accidente.Fecha_ocurrencia == null ? "" : accidente.Fecha_ocurrencia.ToString();
                 string? Incapacidad_inicial = accidente.Incapacidad_inicial_date == null ? "" : accidente.Incapacidad_inicial_date.ToString();
                 string? Inicio_labores = accidente.Inicio_labores_date == null ? "" : accidente.Inicio_labores_date.ToString();
                 string? Dias_subsidiados = accidente.Dias_subsidiados == null ? "" : accidente.Dias_subsidiados.ToString();
@@ -245,7 +247,8 @@ namespace Accidentabilidad.Pages.Clients
                 string Reporta = accidente.Reporta == null ? "" : accidente.Reporta.ToString();
                 string IPP = accidente.IPP == null ? "" : accidente.IPP.ToString();
 
-                if (login_usuario.Rol != "1")
+
+                if (login_usuario.Rol != "1" && Dias_subsidiados == "")
                 {
                     Dias_subsidiados = obtenerDias(Incapacidad_inicial, Inicio_labores);
                 }
@@ -255,6 +258,7 @@ namespace Accidentabilidad.Pages.Clients
                     SqlCommand cmd = new SqlCommand("SP_Rep_accidentes_UPDATE", con);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@id", accidente.ID));
+                    cmd.Parameters.Add(new SqlParameter("@Fecha_ocurrencia", fecha_ocurrencia));
                     cmd.Parameters.Add(new SqlParameter("@Fecha_registro_reporte", DateTime.Now));
                     cmd.Parameters.Add(new SqlParameter("@Correo_login", login_usuario.Correo));
                     cmd.Parameters.Add(new SqlParameter("@Nomina", accidente.Nomina));

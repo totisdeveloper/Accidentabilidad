@@ -65,6 +65,7 @@ namespace Accidentabilidad.Pages.Clients
                             ID = reader.GetInt32("id"),
                             Folio = !reader.IsDBNull(reader.GetOrdinal("Folio")) ? reader.GetString(reader.GetOrdinal("Folio")) : null,
                             Fecha_registro_reporte = reader.GetDateTime("Fecha_registro_reporte"),
+                            Fecha_ocurrencia = !reader.IsDBNull(reader.GetOrdinal("Fecha_ocurrencia")) ? reader.GetDateTime(reader.GetOrdinal("Fecha_ocurrencia")) : null,
                             Nomina = reader.GetString("nomina"),
                             Empleado = reader.GetString("nombre"),
                             Area = reader.GetString("area"),

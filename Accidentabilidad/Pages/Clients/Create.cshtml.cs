@@ -177,6 +177,7 @@ namespace Accidentabilidad.Pages.Clients
             string connectionString = configuration_.GetConnectionString("DefaultConnection");
             SqlConnection con = new SqlConnection(connectionString);
 
+            var fecha_ocurrencia = accidente.Fecha_ocurrencia == null ? "" : accidente.Fecha_ocurrencia.ToString();
             var Incapacidad_inicial = accidente.Incapacidad_inicial == null ? "" : accidente.Incapacidad_inicial.ToString();
             var Inicio_labores = accidente.Inicio_labores == null ? "" : accidente.Inicio_labores.ToString();
             string? Dias_subsidiados = accidente.Dias_subsidiados == null ? "" : accidente.Dias_subsidiados.ToString();
@@ -192,6 +193,7 @@ namespace Accidentabilidad.Pages.Clients
                     con.Open();
                     SqlCommand cmd = new SqlCommand("SP_Rep_accidentes_INSERT", con);
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Fecha_ocurrencia", fecha_ocurrencia));
                     cmd.Parameters.Add(new SqlParameter("@Folio", string.Empty));
                     cmd.Parameters.Add(new SqlParameter("@Correo_login", usuario.Correo));
                     cmd.Parameters.Add(new SqlParameter("@Nomina", accidente.Nomina));

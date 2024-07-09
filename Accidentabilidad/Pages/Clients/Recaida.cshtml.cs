@@ -84,6 +84,7 @@ namespace Accidentabilidad.Pages.Clients
                         accidente = new Accidente()
                         {
                             Folio = !reader.IsDBNull(reader.GetOrdinal("Folio")) ? reader.GetString(reader.GetOrdinal("Folio")) : null,
+                            Fecha_ocurrencia = !reader.IsDBNull(reader.GetOrdinal("Fecha_ocurrencia")) ? reader.GetDateTime(reader.GetOrdinal("Fecha_ocurrencia")) : null,
                             Fecha_registro_reporte = reader.GetDateTime("Fecha_registro_reporte"),
                             Nomina = reader.GetString("nomina"),
                             Empleado = reader.GetString("nomina") + " " + reader.GetString("nombre"),
@@ -94,13 +95,9 @@ namespace Accidentabilidad.Pages.Clients
                             Diagnostico = reader.GetString("Diagnostico"),
                             Calificacion_ID = reader.GetInt32("Calificacion_ID"),
                             Calificacion = reader.GetString("Calificacion"),
-                            //IPP = !reader.IsDBNull(reader.GetOrdinal("IPP")) ? reader.GetString(reader.GetOrdinal("IPP")) : null,
-                            //Incapacidad_inicial = reader.GetDateTime("Incapacidad_inicial"),
-                            //Inicio_labores = !reader.IsDBNull(reader.GetOrdinal("Inicio_labores")) ? reader.GetDateTime(reader.GetOrdinal("Inicio_labores")) : null,
-                            //Dias_subsidiados = reader.GetInt32("Dias_subsidiados"),
-                            //Reporta = !reader.IsDBNull(reader.GetOrdinal("Reporta")) ? reader.GetString(reader.GetOrdinal("Reporta")) : null
+                            Incapacidad_inicial_date = !reader.IsDBNull(reader.GetOrdinal("Incapacidad_inicial")) ? reader.GetDateTime(reader.GetOrdinal("Incapacidad_inicial")) : null,
                         };
-                    SelectedCityId_ = reader.GetInt32("Calificacion_ID");
+                        SelectedCityId_ = reader.GetInt32("Calificacion_ID");
                     }
                     reader.Close();
                 }
@@ -226,14 +223,15 @@ namespace Accidentabilidad.Pages.Clients
             SqlConnection con = new SqlConnection(connectionString);
 
             var Folio = InputValue == null ? "" : InputValue;
-            var Incapacidad_inicial = accidente.Incapacidad_inicial == null ? "" : accidente.Incapacidad_inicial.ToString();
+            var fecha_ocurrencia = accidente.Fecha_ocurrencia == null ? "" : accidente.Fecha_ocurrencia.ToString();
+            string? Incapacidad_inicial = accidente.Incapacidad_inicial_date == null ? "" : accidente.Incapacidad_inicial_date.ToString();
             var Inicio_labores = accidente.Inicio_labores == null ? "" : accidente.Inicio_labores.ToString();
             string? Dias_subsidiados = accidente.Dias_subsidiados == null ? "" : accidente.Dias_subsidiados.ToString();
             string IPP = accidente.IPP == null ? "" : accidente.IPP.ToString();
             string Reporta = accidente.Reporta == null ? "" : accidente.Reporta.ToString();
             string Atencion = accidente.Atencion == null ? "" : accidente.Atencion.ToString();
 
-            if (usuario.Rol != "1")
+            if (usuario.Rol != "1" && Dias_subsidiados == "")
             {
                 Dias_subsidiados = obtenerDias(Incapacidad_inicial, Inicio_labores);
             }
@@ -249,6 +247,7 @@ namespace Accidentabilidad.Pages.Clients
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@Folio", Folio));
                     cmd.Parameters.Add(new SqlParameter("@Correo_login", usuario.Correo));
+                    cmd.Parameters.Add(new SqlParameter("@Fecha_ocurrencia", fecha_ocurrencia));
                     cmd.Parameters.Add(new SqlParameter("@Nomina", accidente.Nomina));
                     cmd.Parameters.Add(new SqlParameter("@Area_ID", accidente.Area_ID));
                     cmd.Parameters.Add(new SqlParameter("@Atencion_ID", accidente.Atencion_ID));
@@ -270,6 +269,7 @@ namespace Accidentabilidad.Pages.Clients
             }
             catch (Exception ex)
             {
+                errorMessage = ex.Message;
                 CargaDatos(InputValue);
             }
             finally

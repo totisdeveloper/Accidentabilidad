@@ -6,7 +6,11 @@ namespace Accidentabilidad.Models
     {
         public int ID { get; set; }
         public string? Folio { get; set; }
+
         public DateTime Fecha_registro_reporte { get; set; }
+
+        [Required(ErrorMessage = "El campo Fecha ocurrencia es obligatorio")]
+        public DateTime?Fecha_ocurrencia { get; set; }
         public string? Correo_login { get; set; }
 
         [Required(ErrorMessage = "El campo Nomina es obligatorio")]
