@@ -16,6 +16,13 @@
         </div>
     </div>
     <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">El accidente va a reportar para el mes de:</label>
+        <div class="col-sm-6">
+            <input id="monthInput" class="form-control" type="month" asp-for="accidente.Fecha_registro_reporte" />
+            <span class="text-danger" asp-validation-for="accidente.Fecha_registro_reporte"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Trabajador:</label>
         <div class="col-sm-6">
             <select class="form-control" id="exampleSelect" asp-for="accidente.Nomina" asp-items="Model.empleados">

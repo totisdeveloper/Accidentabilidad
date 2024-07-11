@@ -7,6 +7,7 @@ namespace Accidentabilidad.Models
         public int ID { get; set; }
         public string? Folio { get; set; }
 
+        [Required(ErrorMessage = "El campo Mes reporta es obligatorio")]
         public DateTime Fecha_registro_reporte { get; set; }
 
         [Required(ErrorMessage = "El campo Fecha ocurrencia es obligatorio")]

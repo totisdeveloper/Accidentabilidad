@@ -33,6 +33,10 @@ namespace Accidentabilidad.Pages.Clients
         public List<SelectListItem> atencion = new List<SelectListItem>(); 
         public List<Calificacion> Cities { get; set; }
 
+
+        [BindProperty]
+        public Accidente accidente { get; set; }
+
         [BindProperty]
         public int SelectedCountryId { get; set; }
 
@@ -70,6 +74,17 @@ namespace Accidentabilidad.Pages.Clients
             areas = getItems("SP_Cat_areas_SELECT");
             atencion = getItems("SP_Cat_atencion_SELECT");
             carga_calificacion();
+
+            DateTime fechaActual = DateTime.Now;
+
+            // Crear una nueva fecha con el primer día del mes actual
+            DateTime primerDiaDelMes = new DateTime(fechaActual.Year, fechaActual.Month, 1);
+
+            accidente = new Accidente()
+            {
+                Fecha_ocurrencia= fechaActual,
+                Fecha_registro_reporte = primerDiaDelMes
+            };
         }
 
         private void carga_calificacion()
@@ -168,10 +183,9 @@ namespace Accidentabilidad.Pages.Clients
             }
         }
 
-        [BindProperty]
-        public Accidente accidente { get; set; }
         public void OnPost()
         {
+
             getCredenciales();
 
             string connectionString = configuration_.GetConnectionString("DefaultConnection");
@@ -193,6 +207,7 @@ namespace Accidentabilidad.Pages.Clients
                     con.Open();
                     SqlCommand cmd = new SqlCommand("SP_Rep_accidentes_INSERT", con);
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Fecha_registro_reporte", accidente.Fecha_registro_reporte));
                     cmd.Parameters.Add(new SqlParameter("@Fecha_ocurrencia", fecha_ocurrencia));
                     cmd.Parameters.Add(new SqlParameter("@Folio", string.Empty));
                     cmd.Parameters.Add(new SqlParameter("@Correo_login", usuario.Correo));

@@ -259,7 +259,7 @@ namespace Accidentabilidad.Pages.Clients
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@id", accidente.ID));
                     cmd.Parameters.Add(new SqlParameter("@Fecha_ocurrencia", fecha_ocurrencia));
-                    cmd.Parameters.Add(new SqlParameter("@Fecha_registro_reporte", DateTime.Now));
+                    cmd.Parameters.Add(new SqlParameter("@Fecha_registro_reporte", accidente.Fecha_registro_reporte));
                     cmd.Parameters.Add(new SqlParameter("@Correo_login", login_usuario.Correo));
                     cmd.Parameters.Add(new SqlParameter("@Nomina", accidente.Nomina));
                     cmd.Parameters.Add(new SqlParameter("@Area_ID", accidente.Area_ID));

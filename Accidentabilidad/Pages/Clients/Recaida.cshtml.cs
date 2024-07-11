@@ -248,6 +248,7 @@ namespace Accidentabilidad.Pages.Clients
                     cmd.Parameters.Add(new SqlParameter("@Folio", Folio));
                     cmd.Parameters.Add(new SqlParameter("@Correo_login", usuario.Correo));
                     cmd.Parameters.Add(new SqlParameter("@Fecha_ocurrencia", fecha_ocurrencia));
+                    cmd.Parameters.Add(new SqlParameter("@Fecha_registro_reporte", accidente.Fecha_registro_reporte));
                     cmd.Parameters.Add(new SqlParameter("@Nomina", accidente.Nomina));
                     cmd.Parameters.Add(new SqlParameter("@Area_ID", accidente.Area_ID));
                     cmd.Parameters.Add(new SqlParameter("@Atencion_ID", accidente.Atencion_ID));

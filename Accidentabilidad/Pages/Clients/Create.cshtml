@@ -18,7 +18,7 @@
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <div class="row mb-3">
             <div class="col-sm-3 col-form-label">
-                <label>¿Es recaida? :</label>
+                <label>¿Es recaida? SI :</label>
                 <input type="checkbox" id="toggleSwitch" onclick="toggleDiv()" />
             </div>
             <div class="col-md-6" id="myDiv">
@@ -40,6 +40,13 @@
             <div class="col-sm-6">
                 <input id="fecha_ocurrencia" class="form-control" type="date" asp-for="accidente.Fecha_ocurrencia" />
                 <span class="text-danger" asp-validation-for="accidente.Fecha_ocurrencia"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">El accidente va a reportar para el mes de:</label>
+            <div class="col-sm-6">
+                <input id="monthInput" class="form-control" type="month" asp-for="accidente.Fecha_registro_reporte" />
+                <span class="text-danger" asp-validation-for="accidente.Fecha_registro_reporte"></span>
             </div>
         </div>
         <div class="row mb-3">
