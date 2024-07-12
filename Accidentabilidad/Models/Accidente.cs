@@ -12,6 +12,7 @@ namespace Accidentabilidad.Models
 
         [Required(ErrorMessage = "El campo Fecha ocurrencia es obligatorio")]
         public DateTime?Fecha_ocurrencia { get; set; }
+        public string?Fecha_ocurrencia_text { get; set; }
         public string? Correo_login { get; set; }
 
         [Required(ErrorMessage = "El campo Nomina es obligatorio")]
@@ -37,20 +38,18 @@ namespace Accidentabilidad.Models
 
         public string? Calificacion { get; set; }
 
-        //[Required(ErrorMessage = "El campo incapacidad inicial es obligatorio")]
-        //public DateTime? Incapacidad_inicial { get; set; }
         public string? Incapacidad_inicial { get; set; }
 
         public DateTime? Incapacidad_inicial_date { get; set; }
 
-        //public DateTime? Inicio_labores { get; set; }
         public string? Inicio_labores { get; set; }
+
         public DateTime? Inicio_labores_date { get; set; }
 
         public int? Dias_subsidiados { get; set; }
 
         public string? Reporta { get; set; }
-        public DateTime? Fecha_modificacion { get; set; }
+        public DateTime Fecha_modificacion { get; set; }
 
         public string? IPP { get; set; }
     }
