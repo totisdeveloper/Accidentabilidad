@@ -48,6 +48,8 @@ namespace Accidentabilidad.Pages.Historico
                         {
                             ID = reader.GetInt32("id"),
                             Folio = reader.GetString("Folio"),
+                            Fecha_registro_reporte = reader.GetDateTime("Fecha_registro_reporte"),
+                            Fecha_ocurrencia_text = !reader.IsDBNull(reader.GetOrdinal("Fecha_ocurrencia")) ? reader.GetDateTime(reader.GetOrdinal("Fecha_ocurrencia")).ToShortDateString() : null,
                             Correo_login = reader.GetString("Correo_login"),
                             Nomina = reader.GetString("nomina"),
                             Empleado = reader.GetString("nombre"),

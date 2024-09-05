@@ -3,112 +3,123 @@
 @{
 }
 
-<link href="~/css/index.css" rel="stylesheet" />
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-3">
-                    <h1 class="my-12 display-12 fw-bold ls-tight"> Bitacora de accidentes </h1>
-                </div>
-            </div>
-            @if (Model.errorMessage.Length > 0)
-            {
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registra nuevo accidente</title>
+    <link href="~/css/index.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="row">
-
-                    <div class="col-md-4 offset-4 alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>@Model.errorMessage</strong>
-                        <button type="button" class='btn-close' data-bs-dismiss='alert' aria-label="Close"></button>
+                    <div class="col-md-3">
+                        <h1 class="my-12 display-12 fw-bold ls-tight"> Bitacora de accidentes </h1>
                     </div>
                 </div>
-            }
-            <div class="row" style="padding-top:1rem">
-                <div class="col-md-3">
+                @if (Model.errorMessage.Length > 0)
+                {
                     <div class="row">
-                        <div class="col-md-5">
-                            <a class='btn btn-primary btn-sm' href='/Clients/Create' style="width:100%"><i class="bi bi-plus-lg"></i> Nuevo accidente</a>
-                        </div>
-                        <div class="col-md-5">
-                            @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
-                            {
-                                <a class='btn btn-primary btn-sm' href="/Historico/Historial" style="width:100%"><i class="bi bi-hourglass-split"></i> Control de cambios</a>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 offset-6" style="justify-content:end">
-                    <div class="input-group">
-                        <div class="input-group-text"><i class="bi bi-search"></i></div>
-                        <input type="text" class="form-control" id="myInput" onkeyup="Filtrar()" placeholder="Buscar">
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-12" style="padding-top:1rem">
-                    <div class="table-container">
-                        <table id="myTable" class="table table-sm table-bordered " style="padding-top:2rem">
-                            <thead class="table-light">
-                                <tr>
-                                    @* <th>id</th> *@
-                                    <th>Fecha ocurrencia</th>
-                                    <th>Mes reporte</th>
-                                    <th>Folio</th>
-                                    <th># Nomina</th>
-                                    <th>Trabajador</th>
-                                    <th>Area</th>
-                                    <th>Atención</th>
-                                    <th>Diagnostico</th>
-                                    <th>Calificacion</th>
-                                    <th>IPP</th>
-                                    <th>Incapacidad inicial</th>
-                                    <th>Inicio labores</th>
-                                    <th>Dias subsidiados</th>
-                                    <th>Reporta</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.listAccidentes)
+                        <div class="col-md-4 offset-4 alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>@Model.errorMessage</strong>
+                            <button type="button" class='btn-close' data-bs-dismiss='alert' aria-label="Close"></button>
+                        </div>
+                    </div>
+                }
+                <div class="row" style="padding-top:1rem">
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <a class='btn btn-primary btn-sm' href='/Clients/Create' style="width:100%"><i class="bi bi-plus-lg"></i> Nuevo accidente</a>
+                            </div>
+                            <div class="col-md-5">
+                                @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
                                 {
-                                    <tr>
-                                        @* <td>@item.ID</td> *@
-                                        <td>@item.Fecha_ocurrencia_text</td>
-                                        <td>@item.Fecha_registro_reporte.ToString("MMMM").ToUpper()</td>
-                                        <td>@item.Folio</td>
-                                        <td>@item.Nomina</td>
-                                        <td>@item.Empleado</td>
-                                        <td>@item.Area</td>
-                                        <td>@item.Atencion</td>
-                                        <td>@item.Diagnostico</td>
-                                        <td>@item.Calificacion</td>
-                                        <td>@item.IPP</td>
-                                        <td>@item.Incapacidad_inicial</td>
-                                        <td>@item.Inicio_labores</td>
-                                        <td style="text-align: center;">@item.Dias_subsidiados</td>
-                                        <td style="text-align: center;">@item.Reporta</td>
-                                        <td>
-                                            <a class='btn btn-primary btn-sm' href='/Clients/Edit?id=@item.ID'><i class="bi bi-pencil-fill"></i> Editar</a>
-                                        </td>
-                                    </tr>
+                                    <a class='btn btn-primary btn-sm' href="/Historico/Historial" style="width:100%"><i class="bi bi-hourglass-split"></i> Control de cambios</a>
                                 }
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="padding-top:1rem">
+                        <div class="table-container">
+                            <table id="myTable" class="table table-sm table-bordered" style="padding-top:2rem">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Fecha ocurrencia</th>
+                                        <th>Mes reporte</th>
+                                        <th>Folio</th>
+                                        <th># Nomina</th>
+                                        <th>Trabajador</th>
+                                        <th>Area</th>
+                                        <th>Atención</th>
+                                        <th>Diagnostico</th>
+                                        <th>Calificacion</th>
+                                        <th>IPP</th>
+                                        <th>Incapacidad inicial</th>
+                                        <th>Inicio labores</th>
+                                        <th>Dias subsidiados</th>
+                                        <th>Reporta</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                    <tr>
+                                        <th><input type="date" id="dateFilter" class="filter-input" placeholder="Buscar Fecha ocurrencia" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Mes reporte" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Folio" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar # Nomina" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Trabajador" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Area" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Atención" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Diagnostico" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Calificacion" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar IPP" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Incapacidad inicial" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Inicio labores" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Dias subsidiados" /></th>
+                                        <th><input type="text" class="column-filter" placeholder="Buscar Reporta" /></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.listAccidentes)
+                                    {
+                                        <tr>
+                                            <td>@item.Fecha_ocurrencia_text</td>
+                                            <td>@item.Fecha_registro_reporte.ToString("dd/MM/yyyy")</td>
+                                            <td>@item.Folio</td>
+                                            <td>@item.Nomina</td>
+                                            <td>@item.Empleado</td>
+                                            <td>@item.Area</td>
+                                            <td>@item.Atencion</td>
+                                            <td>@item.Diagnostico</td>
+                                            <td>@item.Calificacion</td>
+                                            <td>@item.IPP</td>
+                                            <td>@item.Incapacidad_inicial</td>
+                                            <td>@item.Inicio_labores</td>
+                                            <td style="text-align: center;">@item.Dias_subsidiados</td>
+                                            <td style="text-align: center;">@item.Reporta</td>
+                                            <td>
+                                                <a class='btn btn-primary btn-sm' href='/Clients/Edit?id=@item.ID'><i class="bi bi-pencil-fill"></i> Editar</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
-            {
-                <div id="DivbtnDescargaReporte">
-                    <form method="post">
-                        <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-file-earmark-arrow-down"></i> Exportar</button>
-                    </form>
-                    @* <button class="btn btn-primary btn-sm" onclick="exportTableToExcel('myTable', 'Listado de accidentes')"><i class="bi bi-file-earmark-arrow-down"></i> Exportar</button> *@
-                </div>
-            }
         </div>
     </div>
-</div>
+</body>
+</html>
 
 @section Scripts {
     <script src="~/js/Index.js"></script>

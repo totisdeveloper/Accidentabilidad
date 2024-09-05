@@ -3,7 +3,7 @@
 @{
 }
 
-<h2>Nueva recaida</h2>
+<h2>Registro de arrastre/recaida</h2>
 <link href="~/css/recaida.css" rel="stylesheet" />
 <form method="POST" id="form_accidente_reciada">
     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
@@ -78,32 +78,26 @@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Incapacidad inicial:</label>
         <div class="col-sm-6">
-            <input class="form-control" type="date" asp-for="accidente.Incapacidad_inicial_date" />
+            <input id="Incapacidadinicial" class="form-control" type="date" asp-for="accidente.Incapacidad_inicial_date" />
             <span class="text-danger" asp-validation-for="accidente.Incapacidad_inicial"></span>
         </div>
     </div>
-    @*     <div class="row mb-3">
-    <label class="col-sm-3 col-form-label">Incapacidad inicial:</label>
-    <div class="col-sm-6">
-    <input class="form-control" type="date" asp-for="accidente.Incapacidad_inicial" />
-    <span class="text-danger" asp-validation-for="accidente.Incapacidad_inicial"></span>
-    </div>
-    </div> *@
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Inicio de labores:</label>
         <div class="col-sm-6">
-            <input class="form-control" type="date" asp-for="accidente.Inicio_labores" />
+            <input id="Iniciolabores" class="form-control" type="date" asp-for="accidente.Inicio_labores" />
             <span class="text-danger" asp-validation-for="accidente.Inicio_labores"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Días subsidiados</label>
+        <div class="col-sm-6">
+            <input id="dias_sub" type="number" class="form-control" asp-for="accidente.Dias_subsidiados">
         </div>
     </div>
     @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
     {
-        <div class="row mb-3">
-            <label class="col-sm-3 col-form-label">Días subsidiados</label>
-            <div class="col-sm-6">
-                <input type="number" class="form-control" asp-for="accidente.Dias_subsidiados">
-            </div>
-        </div>
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">¿Se reporta?:</label>
             <div class="col-sm-6">
@@ -144,6 +138,7 @@
     <script>
         $(document).ready(function () {
             $('#exampleSelect').select2();
+            document.getElementById('dias_sub').value = getDaysInCurrentMonth();
         })
         const cities = @Html.Raw(Json.Serialize(Model.Cities));
 
@@ -171,6 +166,50 @@
         }
         // Call filterCities on page load to set the city dropdown if editing
         filterCities();
+
+        document.getElementById('Incapacidadinicial').addEventListener('change', calculateDaysDifference);
+        document.getElementById('Iniciolabores').addEventListener('change', calculateDaysDifference);
+
+        function calculateDaysDifference() {
+            // Obtener las fechas del formulario
+            const startDate = new Date(document.getElementById('Incapacidadinicial').value);
+            const endDate = new Date(document.getElementById('Iniciolabores').value);
+
+            // Comprobar que ambas fechas estén seleccionadas
+            if (!isNaN(startDate) && !isNaN(endDate)) {
+                // Calcular la diferencia en milisegundos
+                const timeDifference = endDate - startDate;
+
+                // Convertir la diferencia de milisegundos a días
+                const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+
+                if (daysDifference >= 0 && daysDifference <= 31) {
+
+                    // Mostrar el resultado en el campo de texto
+                    document.getElementById('dias_sub').value = daysDifference;
+                }
+                else {
+                    alert('El numero de dias no cumple con el rango permitido permitido')
+
+                }
+            }
+        }
+
+        function getDaysInCurrentMonth() {
+            const today = new Date(); // Fecha actual
+            const year = today.getFullYear();
+            const month = today.getMonth(); // Mes actual (de 0 a 11)
+
+            // Crear una fecha del primer día del siguiente mes y restarle un día
+            const firstDayNextMonth = new Date(year, month + 1, 1);
+            const lastDayCurrentMonth = new Date(firstDayNextMonth - 1);
+
+            // Obtener el número del día del mes (esto será el número de días en el mes)
+            const daysInMonth = lastDayCurrentMonth.getDate();
+
+            return daysInMonth;
+        }
 
     </script>
 }

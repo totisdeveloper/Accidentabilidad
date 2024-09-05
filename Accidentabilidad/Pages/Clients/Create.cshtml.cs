@@ -185,7 +185,6 @@ namespace Accidentabilidad.Pages.Clients
 
         public void OnPost()
         {
-
             getCredenciales();
 
             string connectionString = configuration_.GetConnectionString("DefaultConnection");
@@ -198,7 +197,7 @@ namespace Accidentabilidad.Pages.Clients
             string IPP = accidente.IPP == null ? "" : accidente.IPP.ToString();
             string Reporta = accidente.Reporta == null ? "" : accidente.Reporta.ToString();
 
-            Dias_subsidiados = obtenerDias(Incapacidad_inicial, Inicio_labores);
+            //Dias_subsidiados = obtenerDias(Incapacidad_inicial, Inicio_labores);
 
             try
             {
@@ -241,22 +240,22 @@ namespace Accidentabilidad.Pages.Clients
             }
         }
 
-        private string obtenerDias(string fecha_Inicial, string fecha_Final)
-        {
-            int dias = 0;
+        //private string obtenerDias(string fecha_Inicial, string fecha_Final)
+        //{
+        //    int dias = 0;
 
-            if (fecha_Inicial != "" && fecha_Final != "")
-            {
-                DateTime fechaInicial = Convert.ToDateTime(fecha_Inicial);
-                DateTime fechaFinal = Convert.ToDateTime(fecha_Final);
+        //    if (fecha_Inicial != "" && fecha_Final != "")
+        //    {
+        //        DateTime fechaInicial = Convert.ToDateTime(fecha_Inicial);
+        //        DateTime fechaFinal = Convert.ToDateTime(fecha_Final);
 
-                // Calcular la diferencia de días
-                TimeSpan diferencia = fechaFinal.Subtract(fechaInicial);
+        //        // Calcular la diferencia de días
+        //        TimeSpan diferencia = fechaFinal.Subtract(fechaInicial);
 
-                // Obtener el número de días
-                dias = diferencia.Days;
-            }
-            return dias.ToString();
-        }
+        //        // Obtener el número de días
+        //        dias = diferencia.Days;
+        //    }
+        //    return dias.ToString();
+        //}
     }
 }

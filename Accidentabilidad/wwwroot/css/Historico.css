@@ -1,10 +1,10 @@
-body {
+/*body {
     font-family: Arial, sans-serif;
 }
 
 .table-container {
-    max-height: 600px; /* Ajusta esto según tus necesidades */
-    overflow-y: auto;
+    max-height: 600px;*/ /* Ajusta esto según tus necesidades */
+    /*overflow-y: auto;
     border: 1px solid #ddd;
 }
 
@@ -22,6 +22,6 @@ th, td {
 thead th {
     position: sticky;
     top: 0;
-    background: #f1f1f1; /* Fondo del encabezado */
-    z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
-}
+    background: #f1f1f1;*/ /* Fondo del encabezado */
+    /*z-index: 1;*/ /* Asegura que el encabezado esté por encima del contenido */
+/*}*/

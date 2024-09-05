@@ -18,7 +18,7 @@
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <div class="row mb-3">
             <div class="col-sm-3 col-form-label">
-                <label>¿Es recaida? SI :</label>
+                <label><strong>¿Es arrastre/recaida? SI :</strong></label>
                 <input type="checkbox" id="toggleSwitch" onclick="toggleDiv()" />
             </div>
             <div class="col-md-6" id="myDiv">
@@ -114,14 +114,14 @@
                 <input id="Iniciolabores" class="form-control" type="date" asp-for="accidente.Inicio_labores" />
             </div>
         </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Días subsidiados</label>
+            <div class="col-sm-6">
+                <input id="dias_sub" type="number" class="form-control" asp-for="accidente.Dias_subsidiados">
+            </div>
+        </div>
         @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
         {
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Días subsidiados</label>
-                <div class="col-sm-6">
-                    <input type="number" class="form-control" asp-for="accidente.Dias_subsidiados">
-                </div>
-            </div>
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">¿Se reporta?:</label>
                 <div class="col-sm-6">
@@ -133,7 +133,7 @@
                     </select>
                 </div>
             </div>
-        }
+         }
         <div class="row mb-3">
             <div class="offset-sm-3 col-sm-3 d-grid">
                 <button type="submit" class='btn btn-primary btn-sm'>Guardar</button>

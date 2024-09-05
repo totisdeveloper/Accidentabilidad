@@ -3,88 +3,91 @@
 @{
 }
 
-<link href="~/css/historico.css" rel="stylesheet" />
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-
-            <div class="row">
-                <div class="col-md-12">
-                    <h1 class="my-12 display-12 fw-bold ls-tight"> Control de cambios </h1>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2">
-                    <a class='btn btn-primary btn-sm' href='/Clients/Index'><i class="bi bi-skip-backward-fill"></i> Volver</a>
-                </div>
-                <div class="col-md-3 offset-7" style="justify-content:end">
-                    <div class="input-group">
-                        <div class="input-group-text"><i class="bi bi-search"></i></div>
-                        <input type="text" class="form-control" id="myInput" onkeyup="Filtrar()" placeholder="Buscar">
-                    </div>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <div class="row">
-                    <div class="col-md-12" style="padding-top:1rem">
-                        <table id="myTable" class="table  table-sm table-bordered " style="padding-top:2rem">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Folio</th>
-                                    <th># Nomina</th>
-                                    <th>Trabajador</th>
-                                    <th>Area</th>
-                                    <th>Atención</th>
-                                    <th>Diagnostico</th>
-                                    <th>Calificacion</th>
-                                    <th>IPP</th>
-                                    <th>Incapacidad inicial</th>
-                                    <th>Inicio labores</th>
-                                    <th>Dias subsidiados</th>
-                                    <th>Reporta</th>
-                                    <th>Fecha_modificacion</th>
-                                    <th>Correo_login</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.listAccidentes)
-                                {
-                                    <tr>
-                                        <td>@item.Folio</td>
-                                        <td>@item.Nomina</td>
-                                        <td>@item.Empleado</td>
-                                        <td>@item.Area</td>
-                                        <td>@item.Atencion</td>
-                                        <td>@item.Diagnostico</td>
-                                        <td>@item.Calificacion</td>
-                                        <td>@item.IPP</td>
-                                        <td>@item.Incapacidad_inicial</td>
-                                        <td>@item.Inicio_labores</td>
-                                        <td style="text-align: center;">@item.Dias_subsidiados</td>
-                                        <td style="text-align: center;">@item.Reporta</td>
-                                        <td>@item.Fecha_modificacion.ToString("dd/MM/yyyy HH:mm")</td>
-                                        <td>@item.Correo_login</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            @if (Model.errorMessage.Length > 0)
-            {
-                <div class="col-md-4 offset-4 alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>@Model.errorMessage</strong>
-                    <button type="button" class='btn-close' data-bs-dismiss='alert' aria-label="Close"></button>
-                </div>
-            }
-
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataTables Filtering</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+</head>
+<body>
+    <button id="clearFiltersButton">Limpiar Filtros</button>
+    <div class="table-container">
+        <table id="myTable" class="table table-sm table-bordered" style="padding-top:2rem">
+            <thead class="table-light">
+                <tr>
+                    <th>Fecha_modificacion</th>
+                    <th>Correo_login</th>
+                    <th>Fecha ocurrencia</th>
+                    <th>Mes reporte</th>
+                    <th>Folio</th>
+                    <th># Nomina</th>
+                    <th>Trabajador</th>
+                    <th>Area</th>
+                    <th>Atención</th>
+                    <th>Diagnostico</th>
+                    <th>Calificacion</th>
+                    <th>IPP</th>
+                    <th>Incapacidad inicial</th>
+                    <th>Inicio labores</th>
+                    <th>Dias subsidiados</th>
+                    <th>Reporta</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="date" id="startDateFilter" class="filter-input" placeholder="Fecha inicio" />
+                        <input type="date" id="endDateFilter" class="filter-input" placeholder="Fecha fin" />
+                    </th>
+                    <th><input type="text" class="column-filter" placeholder="Correo login" /></th>
+                    <th><input type="date" id="dateFilter" class="filter-input" placeholder="Buscar Fecha ocurrencia" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Mes reporte" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Folio" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar # Nomina" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Trabajador" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Area" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Atención" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Diagnostico" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Calificacion" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar IPP" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Incapacidad inicial" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Inicio labores" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Dias subsidiados" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Reporta" /></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.listAccidentes)
+                {
+                    <tr>
+                        <td class="fecha-modificacion">@item.Fecha_modificacion.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="correo-login">@item.Correo_login</td>
+                        <td class="fecha-ocurrencia">@item.Fecha_ocurrencia_text</td>
+                        <td class="mes-reporte">@item.Fecha_registro_reporte.ToString("dd/MM/yyyy")</td>
+                        <td class="folio">@item.Folio</td>
+                        <td class="nomina">@item.Nomina</td>
+                        <td class="trabajador">@item.Empleado</td>
+                        <td class="area">@item.Area</td>
+                        <td class="atencion">@item.Atencion</td>
+                        <td class="diagnostico">@item.Diagnostico</td>
+                        <td class="calificacion">@item.Calificacion</td>
+                        <td class="ipp">@item.IPP</td>
+                        <td class="incapacidad-inicial">@item.Incapacidad_inicial</td>
+                        <td class="inicio-labores">@item.Inicio_labores</td>
+                        <td class="dias-subsidiados" style="text-align: center;">@item.Dias_subsidiados</td>
+                        <td class="reporta" style="text-align: center;">@item.Reporta</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-</div>
+  @*   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> *@
+</body>
+</html>
 
 
 

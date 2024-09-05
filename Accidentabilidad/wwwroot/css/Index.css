@@ -1,14 +1,14 @@
-body {
+/*body {
     font-family: Arial, sans-serif;
-}
+}*/
 
-.table-container {
-    max-height: 600px; /* Ajusta esto según tus necesidades */
+/*.table-container {
+    max-height: 600px;  Ajusta esto según tus necesidades 
     overflow-y: auto;
     border: 1px solid #ddd;
-}
+}*/
 
-table {
+/*table {
     width: 100%;
     border-collapse: collapse;
 }
@@ -22,9 +22,9 @@ th, td {
 thead th {
     position: sticky;
     top: 0;
-    background: #f1f1f1; /* Fondo del encabezado */
-    z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
-}
+    background: #f1f1f1;*/ /* Fondo del encabezado */
+    /*z-index: 1;*/ /* Asegura que el encabezado esté por encima del contenido */
+/*}*/
 
 #DivbtnDescargaReporte {
     padding-top: 1rem;
