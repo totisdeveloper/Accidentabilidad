@@ -16,7 +16,18 @@
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 </head>
 <body>
-    <button id="clearFiltersButton">Limpiar Filtros</button>
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="my-12 display-12 fw-bold ls-tight"> Control de cambios </h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <a class='btn btn-primary btn-sm' href='/Clients/Index'><i class="bi bi-skip-backward-fill"></i> Volver</a>
+        </div>
+    </div>
+    @* <button id="clearFiltersButton">Limpiar Filtros</button> *@
     <div class="table-container">
         <table id="myTable" class="table table-sm table-bordered" style="padding-top:2rem">
             <thead class="table-light">
@@ -39,12 +50,14 @@
                     <th>Reporta</th>
                 </tr>
                 <tr>
-                    <th>
-                        <input type="date" id="startDateFilter" class="filter-input" placeholder="Fecha inicio" />
-                        <input type="date" id="endDateFilter" class="filter-input" placeholder="Fecha fin" />
-                    </th>
+                    @*                     <th>
+                    <input type="date" id="startDateFilter" class="filter-input" placeholder="Fecha inicio" />
+                    <input type="date" id="endDateFilter" class="filter-input" placeholder="Fecha fin" />
+                    </th> *@
+                    <th><input type="text" class="column-filter" placeholder="Buscar Fecha modificacion" /></th>
                     <th><input type="text" class="column-filter" placeholder="Correo login" /></th>
-                    <th><input type="date" id="dateFilter" class="filter-input" placeholder="Buscar Fecha ocurrencia" /></th>
+                    <th><input type="text" class="column-filter" placeholder="Buscar Fecha modificacion" /></th>
+                    @* <th><input type="date" id="dateFilter" class="filter-input" placeholder="Buscar Fecha ocurrencia" /></th> *@
                     <th><input type="text" class="column-filter" placeholder="Buscar Mes reporte" /></th>
                     <th><input type="text" class="column-filter" placeholder="Buscar Folio" /></th>
                     <th><input type="text" class="column-filter" placeholder="Buscar # Nomina" /></th>
@@ -85,7 +98,7 @@
             </tbody>
         </table>
     </div>
-  @*   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> *@
+    @*   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> *@
 </body>
 </html>
 
