@@ -52,5 +52,6 @@ namespace Accidentabilidad.Models
         public DateTime Fecha_modificacion { get; set; }
 
         public string? IPP { get; set; }
+        public string? Movimiento { get; set; }
     }
 }

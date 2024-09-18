@@ -10,10 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registra nuevo accidente</title>
     <link href="~/css/index.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" />
 </head>
 <body>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -25,7 +23,6 @@
                 @if (Model.errorMessage.Length > 0)
                 {
                     <div class="row">
-
                         <div class="col-md-4 offset-4 alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>@Model.errorMessage</strong>
                             <button type="button" class='btn-close' data-bs-dismiss='alert' aria-label="Close"></button>
@@ -35,10 +32,10 @@
                 <div class="row" style="padding-top:1rem">
                     <div class="col-md-3">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <a class='btn btn-primary btn-sm' href='/Clients/Create' style="width:100%"><i class="bi bi-plus-lg"></i> Nuevo accidente</a>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 @if (Model.usuario.Rol == "1" || Model.usuario.Rol == "2" || Model.usuario.Rol == "3")
                                 {
                                     <a class='btn btn-primary btn-sm' href="/Historico/Historial" style="width:100%"><i class="bi bi-hourglass-split"></i> Control de cambios</a>
@@ -46,45 +43,38 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3 offset-6">
+                        <button id="clearFiltersBtn" class="btn btn-primary btn-sm pull-right"><i class="bi bi-funnel-fill"></i> Limpiar Filtros</button>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12" style="padding-top:1rem">
-                        <div class="table-container">
+                        <div class="table-wrapper" id="tableWrapper">
                             <table id="myTable" class="table table-sm table-bordered" style="padding-top:2rem">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Fecha ocurrencia</th>
-                                        <th>Mes reporte</th>
-                                        <th>Folio</th>
-                                        <th># Nomina</th>
-                                        <th>Trabajador</th>
-                                        <th>Area</th>
-                                        <th>Atención</th>
-                                        <th>Diagnostico</th>
-                                        <th>Calificacion</th>
-                                        <th>IPP</th>
-                                        <th>Incapacidad inicial</th>
-                                        <th>Inicio labores</th>
-                                        <th>Dias subsidiados</th>
-                                        <th>Reporta</th>
-                                        <th>Acción</th>
-                                    </tr>
-                                    <tr>
-                                        @* <th><input type="date" id="dateFilter" class="filter-input" placeholder="Buscar Fecha ocurrencia" /></th> *@
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Fecha ocurrencia" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Mes reporte" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Folio" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar # Nomina" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Trabajador" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Area" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Atención" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Diagnostico" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Calificacion" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar IPP" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Incapacidad inicial" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Inicio labores" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Dias subsidiados" /></th>
-                                        <th><input type="text" class="column-filter" placeholder="Buscar Reporta" /></th>
+                                        <th>
+                                            Fecha ocurrencia
+                                            <br />
+                                            <label>Desde:</label>
+                                            <input type="date" id="filterStartDate" class="date-filter" />
+                                            <br />
+                                            <label>Hasta:</label>
+                                            <input type="date" id="filterEndDate" class="date-filter" />
+                                        </th>
+                                        <th>Mes reporte<input type="text" class="filter-input" placeholder="Buscar Mes reporte" /></th>
+                                        <th>Folio<input type="text" class="filter-input" placeholder="Buscar Folio" /></th>
+                                        <th># Nomina<input type="text" class="filter-input" placeholder="Buscar # Nomina" /></th>
+                                        <th>Trabajador<input type="text" class="filter-input" placeholder="Buscar Trabajador" /></th>
+                                        <th>Area<input type="text" class="filter-input" placeholder="Buscar Area" /></th>
+                                        <th>Atención<input type="text" class="filter-input" placeholder="Buscar Atención" /></th>
+                                        <th>Diagnostico<input type="text" class="filter-input" placeholder="Buscar Diagnostico" /></th>
+                                        <th>Calificacion<input type="text" class="filter-input" placeholder="Buscar Calificacion" /></th>
+                                        <th>IPP<input type="text" class="filter-input" placeholder="Buscar IPP" /></th>
+                                        <th>Incapacidad inicial<input type="text" class="filter-input" placeholder="Buscar Incapacidad inicial" /></th>
+                                        <th>Inicio labores<input type="text" class="filter-input" placeholder="Buscar Inicio labores" /></th>
+                                        <th>Dias subsidiados<input type="text" class="filter-input" placeholder="Buscar Dias subsidiados" /></th>
+                                        <th>Reporta<input type="text" class="filter-input" placeholder="Buscar Reporta" /></th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -107,7 +97,16 @@
                                             <td style="text-align: center;">@item.Dias_subsidiados</td>
                                             <td style="text-align: center;">@item.Reporta</td>
                                             <td>
-                                                <a class='btn btn-primary btn-sm' href='/Clients/Edit?id=@item.ID'><i class="bi bi-pencil-fill"></i> Editar</a>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <a class='btn btn-primary btn-sm' href='/Clients/Edit?id=@item.ID'><i class="bi bi-pencil-fill"></i> Editar</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <a class='btn btn-danger btn-sm' href='/Clients/Eliminar?id=@item.ID' onclick="return confirm('¿Está seguro que desea eliminar?')"><i class="bi bi-trash-fill"></i> Eliminar</a>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     }
@@ -119,10 +118,9 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/Index.js"></script>
 </body>
 </html>
 
-@section Scripts {
-    <script src="~/js/Index.js"></script>
-}
 

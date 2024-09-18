@@ -1,21 +1,5 @@
 ﻿$(document).ready(function () {
 
-    // Pintar calificaciones pendientes en amarillo
-        var tabla = document.getElementById("myTable");
-
-        for (var i = 1; i < tabla.rows.length; i++) {
-
-
-            const texto = (tabla.rows[i].cells[8].innerText);
-
-            const palabra = "pendiente";
-            const regex = new RegExp(`\\b${palabra}\\b`, 'i');
-
-            if (regex.test(texto)) {
-                tabla.rows[i].cells[8].style.backgroundColor = "#fdfd96";
-            }
-        }
-
     // Recuperar la posición del scroll desde el localStorage
     const savedScrollPosition = localStorage.getItem('scrollPosition');
     if (savedScrollPosition) {
@@ -56,7 +40,8 @@
         $('#myTable tbody tr').each(function () {
             var row = $(this);
             var dateValue = row.find('td').eq(columnIndex).text();
-            var rowDate = parseDate(dateValue); // Convertir la fecha de la fila en objeto Date
+            var rowDate = parseDateTime(dateValue);
+            //var rowDate = parseDate(dateValue);
 
             // Convertir las fechas seleccionadas en objetos Date
             var start = startDate ? new Date(startDate) : null;
@@ -70,12 +55,6 @@
             }
         });
     });
-
-    // Función para convertir fecha en formato "dd/MM/yyyy" a un objeto Date
-    function parseDate(input) {
-        var parts = input.split('/');
-        return new Date(parts[2], parts[1] - 1, parts[0]); // Año, Mes (0-indexed), Día
-    }
 
     $('#clearFiltersBtn').on('click', function () {
         // Limpiar los filtros de texto
@@ -93,6 +72,18 @@
     });
 });
 
+function parseDateTime(input) {
+    var parts = input.split(' '); // Separamos la fecha y la hora
+    var dateParts = parts[0].split('/'); // Separamos día, mes y año
+    var timeParts = parts[1].split(':'); // Separamos horas y minutos
 
+    return new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+}
+
+// Función para convertir fecha en formato "dd/MM/yyyy" a un objeto Date
+function parseDate(input) {
+    var parts = input.split('/');
+    return new Date(parts[2], parts[1] - 1, parts[0]); // Año, Mes (0-indexed), Día
+}
 
 

@@ -1,0 +1,46 @@
+.table-wrapper {
+    position: relative;
+    height: 650px;
+    overflow-y: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.filter-input {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.clear-filters-btn {
+    background-color: #4CAF50; /* Verde */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+    .clear-filters-btn:hover {
+        background-color: #45a049; /* Cambia de color al pasar el mouse */
+    }

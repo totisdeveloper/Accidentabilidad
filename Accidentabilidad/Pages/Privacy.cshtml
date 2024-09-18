@@ -8,25 +8,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link href="~/css/privacy.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container mt-5">
-        <form method="post">
-            <div class="form-group">
-                <label for="exampleSelect">Example select</label>
-                <select class="form-control" id="exampleSelect" asp-for="accidente.Nomina" asp-items="Model.empleados"></select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+    <div>
+        <button id="clearFiltersBtn" class="clear-filters-btn">Limpiar Filtros</button>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#exampleSelect').selectmenu();
-        });
-    </script>
+    <div class="table-wrapper" id="tableWrapper">
+        <table id="myTable" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Fecha ocurrencia
+                        <label>Desde:</label>
+                        <input type="date" id="filterStartDate" class="date-filter" />
+                        <label>Hasta:</label>
+                        <input type="date" id="filterEndDate" class="date-filter" />
+                    </th>
+                    <th>Mes reporte<input type="text" class="filter-input" placeholder="Buscar Mes reporte" /></th>
+                    <th>Folio<input type="text" class="filter-input" placeholder="Buscar Folio" /></th>
+                    <th># Nomina<input type="text" class="filter-input" placeholder="Buscar # Nomina" /></th>
+                    <th>Trabajador<input type="text" class="filter-input" placeholder="Buscar Trabajador" /></th>
+                    <th>Area<input type="text" class="filter-input" placeholder="Buscar Area" /></th>
+                    <th>Atención<input type="text" class="filter-input" placeholder="Buscar Atención" /></th>
+                    <th>Diagnostico<input type="text" class="filter-input" placeholder="Buscar Diagnostico" /></th>
+                    <th>Calificacion<input type="text" class="filter-input" placeholder="Buscar Calificacion" /></th>
+                    <th>IPP<input type="text" class="filter-input" placeholder="Buscar IPP" /></th>
+                    <th>Incapacidad inicial<input type="text" class="filter-input" placeholder="Buscar Incapacidad inicial" /></th>
+                    <th>Inicio labores<input type="text" class="filter-input" placeholder="Buscar Inicio labores" /></th>
+                    <th>Dias subsidiados<input type="text" class="filter-input" placeholder="Buscar Dias subsidiados" /></th>
+                    <th>Reporta<input type="text" class="filter-input" placeholder="Buscar Reporta" /></th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.listAccidentes)
+                {
+                    <tr>
+                        <td>@item.Fecha_ocurrencia_text</td>
+                        <td>@item.Fecha_registro_reporte.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Folio</td>
+                        <td>@item.Nomina</td>
+                        <td>@item.Empleado</td>
+                        <td>@item.Area</td>
+                        <td>@item.Atencion</td>
+                        <td>@item.Diagnostico</td>
+                        <td>@item.Calificacion</td>
+                        <td>@item.IPP</td>
+                        <td>@item.Incapacidad_inicial</td>
+                        <td>@item.Inicio_labores</td>
+                        <td style="text-align: center;">@item.Dias_subsidiados</td>
+                        <td style="text-align: center;">@item.Reporta</td>
+                        <td>
+                            <a class='btn btn-primary btn-sm' href='/Clients/Edit?id=@item.ID'><i class="bi bi-pencil-fill"></i> Editar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/privacy.js"></script>
 </body>
 </html>
 

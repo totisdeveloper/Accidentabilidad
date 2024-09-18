@@ -63,6 +63,7 @@ namespace Accidentabilidad.Pages.Historico
                             Inicio_labores = !reader.IsDBNull(reader.GetOrdinal("Inicio_labores")) ? reader.GetDateTime(reader.GetOrdinal("Inicio_labores")).ToShortDateString() : null,
                             Dias_subsidiados = !reader.IsDBNull(reader.GetOrdinal("Dias_subsidiados")) ? reader.GetInt32(reader.GetOrdinal("Dias_subsidiados")) : null,
                             Reporta = !reader.IsDBNull(reader.GetOrdinal("Reporta")) ? reader.GetString(reader.GetOrdinal("Reporta")) : null,
+                            Movimiento = !reader.IsDBNull(reader.GetOrdinal("Movimiento")) ? reader.GetString(reader.GetOrdinal("Movimiento")) : null
                         });
                     }
                     reader.Close();
